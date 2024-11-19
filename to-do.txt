@@ -1,0 +1,27 @@
+add stamina for players
+add stamina cost for attacks, moves and abilities
+
+or maybe no stamina and each round players can only use attack or abilities or move Once
+
+(Done) Ability: "Charge" for warriors
+    - next move + 1 mobility
+    - next atk + 1 dmg
+(Done) Need to add buff and debuff attribute for players
+    - categorize as atk, boost, def, etc.
+    - when attacking, check atk buff list and target's def buff list
+    - when moving or using abilities, check boost buff list
+        -> Currently when a player has boost buff/debuff, next move will use all buff/debuff regardless of
+            whether a player actually used that boost to move more/less distance.
+            to use boost buff: player need to enter extra distance when using MOV (e.g. mov -2)
+
+(Done) Ability: "Precision" for Archers:
+    - attack range + 1 for 2 rounds
+
+Need to detect duplicate buffs and add them together
+    - e.g. 'Charge: atk+1', 'Charge: atk+1' => 'Charge: atk+2'
+
+(Done) Need to organize files
+    - mechanics folder: ability_types.py, abilities.py, buffs.py
+    - game_stat folder: game_stats.py, prompt.py, UI_utils.py
+    - player folder: player.py, player_class.py
+    - globals folder: globals.py, colors.py
