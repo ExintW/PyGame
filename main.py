@@ -7,8 +7,8 @@ from game_stats.game_stats import *
 from game_stats.UI_utils import *
 from mechanics.abilities import *
 
-p1 = Archer('p1', 'ARCHER', -1, BLUE, [Power_Shot(), Precision()])
-p2 = Warrior('p2', 'WARRIOR', 1, RED, [Charge()])
+p1 = Archer('p1', 'ARCHER', -1, BLUE)
+p2 = Warrior('p2', 'WARRIOR', 1, RED)
 
 # p1 = get_player_info(1)
 # p2 = get_player_info(2)

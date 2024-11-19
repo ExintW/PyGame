@@ -25,3 +25,18 @@ Need to detect duplicate buffs and add them together
     - game_stat folder: game_stats.py, prompt.py, UI_utils.py
     - player folder: player.py, player_class.py
     - globals folder: globals.py, colors.py
+
+-------------------version 1.0----------------------
+Change map to 2D:
+    - need to change movement calculation
+    - need to change atk range calculation
+    - (?)moving diagonaly takes 2 mobility, but atk only takes 1 range
+    - Allow multiple characters on each team
+
+Add mage class:
+    - buff related abilities
+
+Add sorcerer class:
+    - aoe damage related abilities
+    - aoe debuff abilities
+        - burning, electricute (vulnerable), etc..

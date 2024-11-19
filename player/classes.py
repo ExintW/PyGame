@@ -2,6 +2,7 @@ from globals.colors import RESET
 from globals.globals import *
 from mechanics.buffs import Buff
 from player.player import Player
+from mechanics.abilities import *
 
 class Archer(Player):
     range = 2
@@ -15,6 +16,7 @@ class Archer(Player):
     def __init__(self, name='', profession='', pos=0, color=RESET, abilities=[]):
         super().__init__(name, profession, pos, color, abilities)
         self.buff[Buff_Type.BOOST_BUFF].append(Buff('Passive: mobil+1', 1, Buff_Type.BOOST_BUFF, 1))
+        self.abilities = [Power_Shot(), Precision()]
 
 class Warrior(Player):
     range = 1
@@ -24,3 +26,7 @@ class Warrior(Player):
     mobility = 1
     mana = 10
     max_mana = 10
+    
+    def __init__(self, name='', profession='', pos=0, color=RESET, abilities=[]):
+        super().__init__(name, profession, pos, color, abilities)
+        self.abilities = [Charge()]
