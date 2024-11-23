@@ -18,6 +18,8 @@ PLAYER_LIST.append(p2)
 NAME_TO_PLAYER_MAP[p1.name] = p1
 NAME_TO_PLAYER_MAP[p2.name] = p2
 
+print(f"{BLUE}-----------------Version 1.0-----------------{RESET}")
+
 print_players_stats()
 
 while(1):
