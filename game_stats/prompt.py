@@ -1,4 +1,4 @@
-from player.player import *
+from player.character import *
 from player.classes import *
 from globals.globals import *
 

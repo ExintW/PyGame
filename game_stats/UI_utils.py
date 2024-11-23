@@ -1,5 +1,5 @@
 from globals.colors import *
-from player.player import *
+from player.character import *
 from globals.globals import *
 
 def divide_line():

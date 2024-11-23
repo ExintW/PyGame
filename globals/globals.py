@@ -1,4 +1,5 @@
 from enum import Enum, auto
+from dataclasses import dataclass
 
 class Buff_Type(Enum):
     ATK_BUFF = 'Attack Buff'
@@ -14,8 +15,13 @@ class Ability_Type(Enum):
     ATK_ABIL = 'Attack Ability'
     BUFF_ABIL = 'Buff Ability'
 
+@dataclass
+class Position:
+    x : int
+    y : int
+
 ROUND = 1
 CUR_MOVE = 'p1'
 NAME_TO_PLAYER_MAP = {}
 PLAYER_LIST = []
-MAP_SIZE = 21 # -10 -> 10
+MAP_SIZE = Position(11, 9)
