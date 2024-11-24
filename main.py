@@ -42,7 +42,7 @@ print_players_stats()
 while(1):
     divide_line()
     print(f'{YELLOW}ROUND: {ROUND}{RESET}')
-    print_map_3D()
+    print_map_2D()
     if CUR_MOVE == 'p1':
         # p1 round
         prompt_move(p1)

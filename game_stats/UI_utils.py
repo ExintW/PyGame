@@ -25,7 +25,7 @@ def print_map():
     
     print(f'_'*left_lines + f'{left_player.color}{left_player.name}{RESET}' + f'_'*center_lines + f'{right_player.color}{right_player.name}{RESET}' + f'_'*right_lines)
 
-def print_map_3D():
+def print_map_2D():
     for row in range(MAP_SIZE.y):
         for col in range(MAP_SIZE.x):
             print(MAP[row][col], end="")
