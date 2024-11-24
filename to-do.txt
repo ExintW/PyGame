@@ -31,7 +31,13 @@ Change map to 2D:
     - need to change movement calculation
     - need to change atk range calculation
     - (?)moving diagonaly takes 2 mobility, but atk only takes 1 range
-    - Allow multiple characters on each team
+    - (Done) Current map size: 11 x 9
+    - (Done) new print_map_3D
+
+(Done) Allow multiple characters on each team
+
+Prompt move modification for teams:
+    - for each available character: prompt move
 
 Add mage class:
     - buff related abilities

@@ -25,3 +25,4 @@ CUR_MOVE = 'p1'
 NAME_TO_PLAYER_MAP = {}
 PLAYER_LIST = []
 MAP_SIZE = Position(11, 9)
+MAP = [["." for _ in range(MAP_SIZE.x)] for _ in range(MAP_SIZE.y)]

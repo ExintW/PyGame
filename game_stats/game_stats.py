@@ -1,6 +1,7 @@
 from player.character import *
 from globals.globals import *
 from globals.colors import *
+from globals.globals import MAP
 
 def check_end():
     """
@@ -16,3 +17,8 @@ def check_end():
 def print_players_stats():
     for player in PLAYER_LIST:
         player.print_char_stat()
+
+def init_map():
+    for p in PLAYER_LIST:
+        for c in p.avail_characters:
+            MAP[c.pos.y][c.pos.x] = c.symbol

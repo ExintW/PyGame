@@ -24,3 +24,10 @@ def print_map():
     right_lines = int(((MAP_SIZE - 1) / 2) - right_player.pos)
     
     print(f'_'*left_lines + f'{left_player.color}{left_player.name}{RESET}' + f'_'*center_lines + f'{right_player.color}{right_player.name}{RESET}' + f'_'*right_lines)
+
+def print_map_3D():
+    for row in range(MAP_SIZE.y):
+        for col in range(MAP_SIZE.x):
+            print(MAP[row][col], end="")
+        print("\n",end="")
+        
