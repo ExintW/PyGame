@@ -6,7 +6,7 @@ class Character:
         self.player = player
         self.name = name
         self.profession = profession
-        self.pos = pos
+        self.pos = pos                  # Position(x, y) @dataclass
         self.color = player.color
         self.abilities = abilities
         self.buff = {

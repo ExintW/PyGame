@@ -28,6 +28,9 @@ def print_map():
 def print_map_2D():
     for row in range(Stats.MAP_SIZE.y):
         for col in range(Stats.MAP_SIZE.x):
-            print(Stats.MAP[row][col], end="")
+            if (Stats.MAP[row][col] == '.'):
+                print('.', end="")
+            else:
+                print(f"{Stats.PLAYER_COORD[(col, row)].color}{Stats.MAP[row][col]}{RESET}", end="")
         print("\n",end="")
         

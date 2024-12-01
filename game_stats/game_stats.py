@@ -22,6 +22,7 @@ def init_map():
     for p in Stats.PLAYER_LIST:
         for c in p.avail_characters:
             Stats.MAP[c.pos.y][c.pos.x] = c.symbol
+            Stats.PLAYER_COORD[(c.pos.x, c.pos.y)] = p
 
 def check_characters():
     for p in Stats.PLAYER_LIST:
