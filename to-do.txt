@@ -26,9 +26,9 @@ Need to detect duplicate buffs and add them together
     - player folder: player.py, player_class.py
     - globals folder: globals.py, colors.py
 
--------------------version 1.0----------------------
+---------------------------------version 1.0------------------------------------
 Change map to 2D:
-    - need to change movement calculation
+    - (Done) need to change movement calculation
     - need to change atk range calculation
     - (?)moving diagonaly takes 2 mobility, but atk only takes 1 range
     - (Done) Current map size: 11 x 9
@@ -36,13 +36,64 @@ Change map to 2D:
 
 (Done) Allow multiple characters on each team
 
-Prompt move modification for teams:
+(Done) Prompt move modification for teams:
     - for each available character: prompt move
 
-Add mage class:
-    - buff related abilities
+Add class signiture abilities (Ult?):
+    - requries # rounds to enable
+    - (?) limit num uses per game
 
-Add sorcerer class:
+---------------------New Classes---------------------
+Mage class:
+    - buff related abilities
     - aoe damage related abilities
     - aoe debuff abilities
         - burning, electricute (vulnerable), etc..
+
+Samurai class:
+    - high close combat dmg
+    - moderate high defence/health
+    - less mobility
+    - Ability: Power Slash
+        - horizontal only
+        - high aoe line damage
+    - Signiture: Dash Slash
+        - horizontal only
+        - high aoe line damage 
+        - move self to end point
+
+Knight class:
+    - High defence
+    - (?) team defence buff
+    - less damage
+    - less mobility and range
+    - Signiture: Shield
+        - block any atk and movement in vertical 3 blocks
+        ...|...
+        ...K...
+        ...|...
+
+Rogue class:
+    - high close combat dmg
+    - high mobility
+    - teleport ability
+    - less defence/health
+
+
+---------------------Class Updates---------------------
+Warrior Class:
+    - more movement related abilities/buffs
+    - more self-apllied atack buff
+    - (?) rage related mechanics
+    - Signiture: Frenzy
+        - buff: atk damage
+        - buff: mobility
+        - (?) Can do 2 moves in 1 round
+        - reduce health or defence debuff
+
+Archer Class:
+    - Signiture: Sentinel
+        - Cannot move unless canceled
+        - Apply "movement penalty" to nearby enemies
+            - when enemies in range performs any action (mov, atk, etc.)
+            - automatically attack them even when not in archer's round.

@@ -1,7 +1,7 @@
 from player.character import *
 from player.classes import *
-from globals.globals import *
-from globals.colors import *
+from globalss.globals import *
+from globalss.colors import *
 from game_stats.prompt import *
 from game_stats.game_stats import *
 from game_stats.UI_utils import *
@@ -27,37 +27,42 @@ p2.avail_characters = p2.characters
 # p1 = get_player_info(1)
 # p2 = get_player_info(2)
 
-PLAYER_LIST.append(p1)
-PLAYER_LIST.append(p2)
-NAME_TO_PLAYER_MAP[p1.name] = p1
-NAME_TO_PLAYER_MAP[p2.name] = p2
+# Initialize global/player lists and maps
+init_lists_and_maps(p1, p2)
 
 # Initialize Map
 init_map()
 
 print(f"{BLUE}-----------------Version 1.0-----------------{RESET}")
 
-print_players_stats()
 
 while(1):
-    divide_line()
-    print(f'{YELLOW}ROUND: {ROUND}{RESET}')
-    print_map_2D()
-    if CUR_MOVE == 'p1':
+    
+    if Stats.CUR_MOVE == 'p1':
         # p1 round
-        prompt_move(p1)
+        for c in p1.avail_characters:
+            print_players_stats()
+            init_map()
+            divide_line()
+            print_map_2D()
+            print(f'{YELLOW}ROUND: {Stats.ROUND}{RESET}')
+            prompt_move(c, p2)
     else:
         # p2 round
-        prompt_move(p2)
-    
-    print_players_stats()
+        for c in p2.avail_characters:
+            print_players_stats()
+            init_map()
+            divide_line()
+            print_map_2D()
+            print(f'{YELLOW}ROUND: {Stats.ROUND}{RESET}')
+            prompt_move(c, p1)
     
     if check_end():
         break
 
-    ROUND += 1
-    if CUR_MOVE == 'p1':
-        CUR_MOVE = 'p2'
+    Stats.ROUND += 1
+    if Stats.CUR_MOVE == 'p1':
+        Stats.CUR_MOVE = 'p2'
     else:
-        CUR_MOVE = 'p1'
+        Stats.CUR_MOVE = 'p1'
     

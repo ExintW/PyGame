@@ -1,6 +1,6 @@
 from player.character import *
 from player.classes import *
-from globals.globals import *
+from globalss.globals import *
 
 def get_player_info(num):
     while (1):
@@ -12,43 +12,44 @@ def get_player_info(num):
         else:
             print(f'{RED}Wrong player info!{RESET}')
 
-def prompt_move(player):
+def prompt_move(c, target):
     """
     Prompt format:
         MOVE:
-            "mov <steps>" (steps can be pos or neg)
+            "mov <del_x> < <del_y>" (can be pos or neg)
         ATTACK:
-            "atk <target name>"
+            "atk <target character symbol>"
         ABILITIES:
-            "abl <ability number> <target name>
+            "abl <ability number> <player> <char symbol>
     """
     while(1):
         end_round = False
-        text = input(f'{GREEN}Enter the action for {RESET}{player.color}{player.name}{RESET}{GREEN} (MOV, ATK, ABL, END): {RESET}').split()
+        text = input(f'{GREEN}Enter the action for {RESET}{c.color}{c.name}{RESET}{GREEN} (MOV, ATK, ABL, END): {RESET}').split()
         
+        # Can change to switch case statement
         if text[0].upper() == 'END':
             print(f'{CYAN}Round Ended{RESET}')
             end_round = True
             
         elif text[0].upper() == 'MOV':
             try:
-                end_round = player.move(int(text[1]))
+                end_round = c.move(int(text[1]), -int(text[2]))
             except:
                 print(f'{RED}Error in Move!{RESET}')
         elif text[0].upper() == 'ATK':
             try: 
-                end_round = player.attack(NAME_TO_PLAYER_MAP[text[1]])
+                end_round = c.attack(target.sym_to_char_map[text[1]])  
             except:
                 print(f'{RED}Error in Attack!{RESET}')
         elif text[0].upper() == 'ABL':
             try:
-                if int(text[1]) > len(player.abilities):
+                if int(text[1]) > len(c.abilities):
                     print(f'{RED}Invalid ability number!{RESET}')
             except:
                 print(f'{RED}Invalid ability number!')
             else:
                 try:
-                    end_round = player.abilities[int(text[1])-1].use(player, NAME_TO_PLAYER_MAP[text[2]])
+                    end_round = c.abilities[int(text[1])-1].use(c, Stats.NAME_TO_PLAYER_MAP[text[2]].sym_to_char_map[text[3]]) # Need to change to "abil <abil #> <player> <char symbol>"
                 except:
                     print(f'{RED}Error in Ability!{RESET}')
         else:

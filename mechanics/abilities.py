@@ -1,7 +1,7 @@
 from mechanics.buffs import Buff
 from mechanics.ability_types import *
-from globals.globals import *
-from globals.colors import *
+from globalss.globals import *
+from globalss.colors import *
     
 class Power_Shot(Atk_Abilities):
     name = 'Power Shot'

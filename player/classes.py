@@ -1,5 +1,5 @@
-from globals.colors import RESET
-from globals.globals import *
+from globalss.colors import RESET
+from globalss.globals import *
 from mechanics.buffs import Buff
 from player.character import Character
 from mechanics.abilities import *
@@ -14,7 +14,7 @@ class Archer(Character):
         self.damage = 1
         self.health = 5
         self.max_health = 5
-        self.mobility = 1
+        self.mobility = 2
         self.mana = 10
         self.max_mana = 10
         self.symbol = 'A'
@@ -28,7 +28,7 @@ class Warrior(Character):
         self.damage = 2
         self.health = 7
         self.max_health = 7
-        self.mobility = 1
+        self.mobility = 2
         self.mana = 10
         self.max_mana = 10
         self.symbol = 'W'

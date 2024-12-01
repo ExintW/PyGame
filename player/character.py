@@ -1,5 +1,5 @@
-from globals.globals import *
-from globals.colors import *
+from globalss.globals import *
+from globalss.colors import *
 
 class Character:
     def __init__(self, player=None, name=None, profession=None, pos=None, abilities=None):
@@ -40,6 +40,7 @@ class Character:
         print('\tpos:', self.pos)
         
     def attack(self, target, dmg_f=0):     
+        # need to check if target is on same team
         if target == self:
             print(f'{CYAN}Cannot attack self!{RESET}')
             return False
@@ -53,28 +54,31 @@ class Character:
             print(f'{CYAN}Not enough range!{RESET}')
             return False
     
-    def move(self, dist, forced=False):
+    def move(self, del_x, del_y, forced=False):
         cur_mobil = self.mobility
         if not forced:
             cur_mobil += calculate_move(self)
-        if abs(self.pos + dist) > (MAP_SIZE - 1) / 2:
+        if (self.pos.x + del_x >= Stats.MAP_SIZE.x) or (self.pos.x + del_x < 0) or (self.pos.y + del_y >= Stats.MAP_SIZE.y) or (self.pos.y + del_y < 0):
             print(f'{RED}Invalid move distance: Out of bound!{RESET}')
             return False
-        elif (abs(dist) <= cur_mobil and dist != 0) or forced:
+        elif (abs(del_x) + abs(del_y) <= cur_mobil and abs(del_x) + abs(del_y) != 0) or forced:
             if not forced:
                 apply_boost_buff(self)
-            self.pos += dist
+            self.pos.x += del_x
+            self.pos.y += del_y
             flag = True
             while (flag):
                 # for bouncing effect
-                for p in PLAYER_LIST:
-                    if p != self and self.pos == p.pos:
-                        self.pos += dist
-                        flag = True
-                        break
-                    else:
-                        flag = False
-                        
+                for p in Stats.PLAYER_LIST:
+                    for c in p.avail_characters:
+                        if c != self and self.pos.x == c.pos.x and self.pos.y == c.pos.y:
+                            self.pos.x += del_x
+                            self.pos.y += del_y
+                            flag = True
+                            break
+                        else:
+                            flag = False
+            
             print(f'{CYAN}{self.name} moved to {self.pos}{RESET}')
             return True
         else:

@@ -1,6 +1,6 @@
 from mechanics.buffs import Buff
-from globals.globals import *
-from globals.colors import *
+from globalss.globals import *
+from globalss.colors import *
 
 class Atk_Abilities:
     name = 'Attack Ability'
