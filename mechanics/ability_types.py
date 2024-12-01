@@ -1,6 +1,7 @@
 from mechanics.buffs import Buff
 from globalss.globals import *
 from globalss.colors import *
+from player.character import *
 
 class Atk_Abilities:
     name = 'Attack Ability'
@@ -36,7 +37,7 @@ class Buff_Abilities:
         if source.mana < self.mana_cost:
             print(f'{RED}Not enough mana!{RESET}')
             return False
-        if abs(source.pos - target.pos) > self.range:
+        if pos_diff(source, target) > self.range:
             print(f'{CYAN}Not enough range!{RESET}')
             return False
         for buff_type, list in self.buff.items():

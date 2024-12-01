@@ -47,6 +47,9 @@ while(1):
             print_map_2D()
             print(f'{YELLOW}ROUND: {Stats.ROUND}{RESET}')
             prompt_move(c, p2)
+            check_characters()
+            if check_end():
+                sys.exit()
     else:
         # p2 round
         for c in p2.avail_characters:
@@ -56,9 +59,9 @@ while(1):
             print_map_2D()
             print(f'{YELLOW}ROUND: {Stats.ROUND}{RESET}')
             prompt_move(c, p1)
-    
-    if check_end():
-        break
+            check_characters()
+            if check_end():
+                sys.exit()
 
     Stats.ROUND += 1
     if Stats.CUR_MOVE == 'p1':

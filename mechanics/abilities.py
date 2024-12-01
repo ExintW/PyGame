@@ -11,15 +11,25 @@ class Power_Shot(Atk_Abilities):
     push_back_dist = 1
     
     def use(self, source, target):
+        if target.player == source.player:
+            print(f'{RED}Cannot attack teamates!{RESET}')
+            return False
         if source.mana < self.mana_cost:
             print(f'{RED}Not enough mana!{RESET}')
             return False
         if not source.attack(target, dmg_f=self.damage):
             return False
-        if source.pos < target.pos:
-            target.move(self.push_back_dist, forced=True)
-        else:
-            target.move(-self.push_back_dist, forced=True)
+        
+        x_diff = source.pos.x - target.pos.x    # Negative = source is left of target
+        y_diff = source.pos.y - target.pos.y    # Negative = source is below target
+        if x_diff < 0:   
+            target.move(self.push_back_dist, 0, forced=True)
+        elif x_diff > 0:
+            target.move(-self.push_back_dist, 0, forced=True)
+        if y_diff < 0:   
+            target.move(0, self.push_back_dist, forced=True)
+        elif y_diff > 0:
+            target.move(0, -self.push_back_dist, forced=True)
         source.mana -= self.mana_cost
         return True
 

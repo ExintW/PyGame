@@ -23,6 +23,13 @@ def init_map():
         for c in p.avail_characters:
             Stats.MAP[c.pos.y][c.pos.x] = c.symbol
 
+def check_characters():
+    for p in Stats.PLAYER_LIST:
+        for c in p.avail_characters.copy():
+            if c.health <= 0:
+                p.avail_characters.remove(c)
+                del p.sym_to_char_map[c.symbol]
+
 def init_lists_and_maps(p1, p2):
     Stats.PLAYER_LIST.append(p1)
     Stats.PLAYER_LIST.append(p2)

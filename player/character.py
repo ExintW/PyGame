@@ -151,3 +151,6 @@ def apply_range_buff(source):
         buff.apply()
         if buff.duration < 1:
             source.buff[Buff_Type.RANGE_DEBUFF].remove(buff)
+
+def pos_diff(source, target):
+    return abs(source.pos.x - target.pos.x) + abs(source.pos.y - target.pos.y)

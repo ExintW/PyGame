@@ -45,13 +45,14 @@ def prompt_move(c, target):
             try:
                 if int(text[1]) > len(c.abilities):
                     print(f'{RED}Invalid ability number!{RESET}')
-            except:
-                print(f'{RED}Invalid ability number!')
-            else:
-                try:
+                elif len(text) == 2 and c.abilities[int(text[1])-1].ability_type == Ability_Type.BUFF_ABIL: # For buff abilities: abl <#> -> means apply to self
+                    end_round = c.abilities[int(text[1])-1].use(c, c)
+                elif len(text) == 3 and c.abilities[int(text[1])-1].ability_type == Ability_Type.ATK_ABIL:  # For atk abilities: abl <#> <char>
+                    end_round = c.abilities[int(text[1])-1].use(c, target.sym_to_char_map[text[2]])
+                else:
                     end_round = c.abilities[int(text[1])-1].use(c, Stats.NAME_TO_PLAYER_MAP[text[2]].sym_to_char_map[text[3]]) # Need to change to "abil <abil #> <player> <char symbol>"
-                except:
-                    print(f'{RED}Error in Ability!{RESET}')
+            except:
+                print(f'{RED}Error in Ability!{RESET}')
         else:
             print(f'{RED}Invalid Move!{RESET}')
         
