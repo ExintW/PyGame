@@ -14,6 +14,7 @@ class Buff_Type(Enum):
 class Ability_Type(Enum):
     ATK_ABIL = 'Attack Ability'
     BUFF_ABIL = 'Buff Ability'
+    AB_ABIL = 'Abnormality Ability'
 
 @dataclass
 class Position:

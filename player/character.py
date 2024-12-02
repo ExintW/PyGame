@@ -9,6 +9,7 @@ class Character:
         self.pos = pos                  # Position(x, y) @dataclass
         self.color = player.color
         self.abilities = abilities
+        self.abnormalities = []
         self.buff = {
             Buff_Type.ATK_BUFF : [],    # affects atk dmg
             Buff_Type.ATK_DEBUFF : [],
@@ -37,6 +38,7 @@ class Character:
         print(f'\t{RED}damage: {self.damage}{RESET}')
         print(f'\t{PURPLE}abilities: {(lambda lst : [abil.name for abil in lst])(self.abilities)}{RESET}')
         self.print_buffs()
+        self.print_abnormalities()
         print('\tpos:', self.pos)
         
     def attack(self, target, dmg_f=0):     
@@ -89,7 +91,21 @@ class Character:
         for buff_type, list in self.buff.items():
             if len(list) > 0:
                 print(f'\t{GREEN}{buff_type.name}: {(lambda lst : [buff.name for buff in lst])(list)}{RESET}')
-
+    
+    def print_abnormalities(self):
+        if len(self.abnormalities) == 0:
+            return
+        print(f"\t{RED}Abnormalities: {RESET}", end="")
+        for ab in self.abnormalities:
+            print(f"{RED}{ab.name}({ab.duration} Rounds) ", end="")
+        print(f"{RESET}")
+    
+    def apply_abnormalities(self):
+        if len(self.abnormalities) == 0:
+            return
+        for ab in self.abnormalities.copy():
+            if not ab.apply():
+                self.abnormalities.remove(ab)
     
 def apply_dmg_buff(source, target, dmg=0):
     if dmg == 0:

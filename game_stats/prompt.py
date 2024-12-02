@@ -22,6 +22,8 @@ def prompt_move(c, target):
         ABILITIES:
             "abl <ability number> <player> <char symbol>"
             "abl <ability number>"  -> for self buff abilities
+        END:
+            "end"
     """
     while(1):
         end_round = False
@@ -49,13 +51,14 @@ def prompt_move(c, target):
                     elif len(text) == 2 and c.abilities[int(text[1])-1].ability_type == Ability_Type.BUFF_ABIL: # For buff abilities: abl <#> -> means apply to self
                         end_round = c.abilities[int(text[1])-1].use(c, c)
                     elif len(text) == 3 and c.abilities[int(text[1])-1].ability_type == Ability_Type.ATK_ABIL:  # For atk abilities: abl <#> <char>
-                        end_round = c.abilities[int(text[1])-1].use(c, target.sym_to_char_map[text[2]])
+                        end_round = c.abilities[int(text[1])-1].use(c, target.sym_to_char_map[text[2].upper()])
                     else:
-                        end_round = c.abilities[int(text[1])-1].use(c, Stats.NAME_TO_PLAYER_MAP[text[2]].sym_to_char_map[text[3]]) # Need to change to "abil <abil #> <player> <char symbol>"
+                        end_round = c.abilities[int(text[1])-1].use(c, Stats.NAME_TO_PLAYER_MAP[text[2].upper()].sym_to_char_map[text[3].upper()]) # "abil <abil #> <player> <char symbol>"
                 except:
                     print(f'{RED}Error in Ability!{RESET}')
             case _:
                 print(f'{RED}Invalid Move!{RESET}')
             
         if end_round:
+            c.apply_abnormalities()
             return

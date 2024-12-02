@@ -27,7 +27,7 @@ Need to detect duplicate buffs and add them together
     - globals folder: globals.py, colors.py
 
 ---------------------------------version 1.0------------------------------------
-Change map to 2D:
+(Done) Change map to 2D:
     - (Done) need to change movement calculation
     - (Done) need to change atk range calculation
     - (?)moving diagonaly takes 2 mobility, but atk only takes 1 range
@@ -44,10 +44,15 @@ Add class signiture abilities (Ult?):
     - requries # rounds to enable
     - (?) limit num uses per game
 
-Add map abnormalities:
+Add map abnomalities:
     - Burning area
     - movement penalty area
     - Shield
+
+(Done) Add abnormality mechanic:
+    - each character has its own list of abnormalities
+    - calculate abnormality damage at end of each character's round
+    - (?) currently abnormalities ignores def buffs
 
 ---------------------New Classes---------------------
 Mage class:
@@ -55,6 +60,9 @@ Mage class:
     - aoe damage related abilities
     - aoe debuff abilities
         - burning, electricute (vulnerable), etc..
+    - (Done) Ability: ignite
+        - apply ignite to a target
+        - burn damage for next few rounds
 
 Samurai class:
     - high close combat dmg
