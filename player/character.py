@@ -10,6 +10,7 @@ class Character:
         self.color = player.color
         self.abilities = abilities
         self.abnormalities = []
+        self.map_effects = set()
         self.buff = {
             Buff_Type.ATK_BUFF : [],    # affects atk dmg
             Buff_Type.ATK_DEBUFF : [],
@@ -36,9 +37,10 @@ class Character:
         print('\trange:', self.range)
         print(f'\t{YELLOW}mobility: {self.mobility}{RESET}')
         print(f'\t{RED}damage: {self.damage}{RESET}')
-        print(f'\t{PURPLE}abilities: {(lambda lst : [abil.name for abil in lst])(self.abilities)}{RESET}')
+        print(f'\t{BLUE}abilities: {(lambda lst : [abil.name for abil in lst])(self.abilities)}{RESET}')
         self.print_buffs()
         self.print_abnormalities()
+        self.print_map_effects()
         print('\tpos:', self.pos)
         
     def attack(self, target, dmg_f=0):     
@@ -82,6 +84,7 @@ class Character:
                             flag = False
             
             print(f'{CYAN}{self.name} moved to {self.pos}{RESET}')
+            self.map_effects.clear()
             return True
         else:
             print(f'{RED}Invalid move distance!{RESET}')
@@ -99,6 +102,17 @@ class Character:
         for ab in self.abnormalities:
             print(f"{RED}{ab.name}({ab.duration} Rounds) ", end="")
         print(f"{RESET}")
+        
+    def print_map_effects(self):
+        if len(self.map_effects) == 0:
+            return
+        print(f"\t{PURPLE}Map Effects: {RESET}", end="")
+        for eff in self.map_effects:
+            if eff.from_player == None:
+                print(f"{RESET}{eff.name}({eff.duration} Rounds) {PURPLE}", end="")
+            else:
+                print(f"{eff.from_player.color}{eff.name}({eff.duration} Rounds) {RESET}{PURPLE}", end="")
+        print(f"{RESET}")
     
     def apply_abnormalities(self):
         if len(self.abnormalities) == 0:
@@ -106,6 +120,7 @@ class Character:
         for ab in self.abnormalities.copy():
             if not ab.apply():
                 self.abnormalities.remove(ab)
+        
     
 def apply_dmg_buff(source, target, dmg=0):
     if dmg == 0:

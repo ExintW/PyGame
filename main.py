@@ -6,6 +6,7 @@ from game_stats.prompt import *
 from game_stats.game_stats import *
 from game_stats.UI_utils import *
 from mechanics.abilities import *
+from mechanics.map_effects import *
 from player.player import Player
 
 import sys
@@ -32,6 +33,13 @@ p2.avail_characters = p2.characters
 # Initialize global/player lists and maps
 init_lists_and_maps(p1, p2)
 
+# map_burn1 = Map_Burn(duration=3, pos=Position(3, 4), damage=1, from_player=p2)
+# map_burn2 = Map_Burn(duration=3, pos=Position(5, 4), damage=1)
+# map_burn3 = Map_Burn(duration=3, pos=Position(5, 3), damage=1, from_player=p1)
+# Stats.MAP_EFFECT_LIST.append(map_burn1)
+# Stats.MAP_EFFECT_LIST.append(map_burn2)
+# Stats.MAP_EFFECT_LIST.append(map_burn3)
+
 # Initialize Map
 init_map()
 
@@ -42,9 +50,10 @@ while(1):
     
     if Stats.CUR_MOVE == 'p1':
         # p1 round
-        for c in p1.avail_characters:
-            print_players_stats()
+        apply_map_effects() 
+        for c in p1.avail_characters:  
             init_map()
+            print_players_stats()
             divide_line()
             print_map_2D()
             print(f'{YELLOW}ROUND: {Stats.ROUND}{RESET}')
@@ -52,11 +61,13 @@ while(1):
             check_characters()
             if check_end():
                 sys.exit()
+            divide_line()
     else:
         # p2 round
+        apply_map_effects()
         for c in p2.avail_characters:
-            print_players_stats()
             init_map()
+            print_players_stats()
             divide_line()
             print_map_2D()
             print(f'{YELLOW}ROUND: {Stats.ROUND}{RESET}')
@@ -64,6 +75,7 @@ while(1):
             check_characters()
             if check_end():
                 sys.exit()
+            divide_line()
 
     Stats.ROUND += 1
     if Stats.CUR_MOVE == 'p1':

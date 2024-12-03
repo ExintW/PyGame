@@ -28,7 +28,7 @@ def prompt_move(c, target):
     while(1):
         end_round = False
         text = input(f'{GREEN}Enter the action for {RESET}{c.color}{c.name}{RESET}{GREEN} (MOV, ATK, ABL, END): {RESET}').split()
-
+        
         match text[0].upper():     # text[0].upper() is the first arg       
             case 'END':
                 print(f'{CYAN}Round Ended{RESET}')
@@ -45,17 +45,17 @@ def prompt_move(c, target):
                 except:
                     print(f'{RED}Error in Attack!{RESET}')
             case 'ABL':
-                try:
+                # try:
                     if int(text[1]) > len(c.abilities):
                         print(f'{RED}Invalid ability number!{RESET}')
                     elif len(text) == 2 and c.abilities[int(text[1])-1].ability_type == Ability_Type.BUFF_ABIL: # For buff abilities: abl <#> -> means apply to self
                         end_round = c.abilities[int(text[1])-1].use(c, c)
-                    elif len(text) == 3 and c.abilities[int(text[1])-1].ability_type == Ability_Type.ATK_ABIL:  # For atk abilities: abl <#> <char>
+                    elif len(text) == 3 and ((c.abilities[int(text[1])-1].ability_type == Ability_Type.ATK_ABIL) or (c.abilities[int(text[1])-1].ability_type == Ability_Type.AB_ABIL)):  # For atk abilities: abl <#> <char>
                         end_round = c.abilities[int(text[1])-1].use(c, target.sym_to_char_map[text[2].upper()])
                     else:
                         end_round = c.abilities[int(text[1])-1].use(c, Stats.NAME_TO_PLAYER_MAP[text[2].upper()].sym_to_char_map[text[3].upper()]) # "abil <abil #> <player> <char symbol>"
-                except:
-                    print(f'{RED}Error in Ability!{RESET}')
+                # except:
+                #     print(f'{RED}Error in Ability!{RESET}')
             case _:
                 print(f'{RED}Invalid Move!{RESET}')
             

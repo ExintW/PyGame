@@ -12,7 +12,7 @@ class Atk_Abilities:
         self.damage = damage
         self.mana_cost = mana_cost
         self.range = range
-        self.mobility_cost =mobility_cost
+        self.mobility_cost = mobility_cost
 
 class Buff_Abilities:
     def __init__(self, atk_buff=[], atk_debuff=[], def_buff=[], def_debuff=[], boost_buff=[], boost_debuff=[], range_buff=[], range_debuff=[], name='Buff Ability', mana_cost=0, range=0, mobility_cost=0):
@@ -49,10 +49,14 @@ class Buff_Abilities:
 class Abnormality_Abilities:
     def __init__(self, name=None, abnormalities=None, mana_cost=0):
         self.name = name
+        self.ability_type = Ability_Type.AB_ABIL
         self.abnormalities = abnormalities
         self.mana_cost = mana_cost
     
     def use(self, source, target):
+        if target.player == source.player:
+            print(f"{RED}Cannot apply to player in same team!{RESET}")
+            return False
         if source.mana < self.mana_cost:
             print(f"{RED}Not enough mana!{RESET}")
             return False

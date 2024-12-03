@@ -39,7 +39,7 @@ class Mage(Character):
         self.abilities = [Ignite()]
         
         self.range = 2
-        self.damage = 1
+        self.damage = 1 
         self.health = 5
         self.max_health = 5
         self.mobility = 1

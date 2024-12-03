@@ -44,7 +44,7 @@ Add class signiture abilities (Ult?):
     - requries # rounds to enable
     - (?) limit num uses per game
 
-Add map abnomalities:
+(Done) Add map effects:
     - Burning area
     - movement penalty area
     - Shield

@@ -28,4 +28,6 @@ class Stats:
     PLAYER_LIST = []
     MAP_SIZE = Position(11, 9)
     MAP = [[]]
-    PLAYER_COORD = {}   # Used for coloring in 2D Map
+    COLOR_COORD = {}   # Used for coloring in 2D Map
+    MAP_EFFECT_LIST = []
+    EFFECT_MAP = [[[]]]
