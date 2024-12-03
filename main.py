@@ -33,12 +33,17 @@ p2.avail_characters = p2.characters
 # Initialize global/player lists and maps
 init_lists_and_maps(p1, p2)
 
-# map_burn1 = Map_Burn(duration=3, pos=Position(3, 4), damage=1, from_player=p2)
-# map_burn2 = Map_Burn(duration=3, pos=Position(5, 4), damage=1)
-# map_burn3 = Map_Burn(duration=3, pos=Position(5, 3), damage=1, from_player=p1)
-# Stats.MAP_EFFECT_LIST.append(map_burn1)
-# Stats.MAP_EFFECT_LIST.append(map_burn2)
-# Stats.MAP_EFFECT_LIST.append(map_burn3)
+Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(5, 5), damage=1))
+Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(5, 4), damage=1))
+Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(5, 3), damage=1))
+
+Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(4, 5), damage=1, from_player=p1))
+Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(4, 4), damage=1, from_player=p1))
+Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(4, 3), damage=1, from_player=p1))
+
+Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(6, 5), damage=1, from_player=p2))
+Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(6, 4), damage=1, from_player=p2))
+Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(6, 3), damage=1, from_player=p2))
 
 # Initialize Map
 init_map()

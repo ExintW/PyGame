@@ -2,7 +2,7 @@ from globalss.globals import *
 from globalss.colors import *
 
 class Character:
-    def __init__(self, player=None, name=None, profession=None, pos=None, abilities=None):
+    def __init__(self, player=None, name=None, profession=None, pos=None, abilities=None, range=0, damage=0, max_health=0, mobility=0, max_mana=0, symbol='/'):
         self.player = player
         self.name = name
         self.profession = profession
@@ -22,13 +22,14 @@ class Character:
             Buff_Type.RANGE_DEBUFF : [],
         }
         
-        self.range = 0
-        self.damage = 0
-        self.health = 0
-        self.max_health = 0
-        self.mobility = 0
-        self.mana = 0
-        self.max_mana = 0    
+        self.range = range
+        self.damage = damage
+        self.health = max_health
+        self.max_health = max_health
+        self.mobility = mobility
+        self.mana = max_mana
+        self.max_mana = max_mana   
+        self.symbol = symbol 
     
     def print_stat(self):
         print(f'{PURPLE}Character: {self.profession}{RESET}')

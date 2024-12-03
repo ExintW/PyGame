@@ -1,6 +1,5 @@
 add stamina for players
 add stamina cost for attacks, moves and abilities
-
 or maybe no stamina and each round players can only use attack or abilities or move Once
 
 (Done) Ability: "Charge" for warriors
