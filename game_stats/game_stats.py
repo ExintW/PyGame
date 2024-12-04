@@ -19,6 +19,7 @@ def print_players_stats():
 
 def init_map():
     Stats.MAP = [["." for _ in range(Stats.MAP_SIZE.x)] for _ in range(Stats.MAP_SIZE.y)]
+    Stats.CHAR_MAP = [[None for _ in range(Stats.MAP_SIZE.x)] for _ in range(Stats.MAP_SIZE.y)]
     for effect in Stats.MAP_EFFECT_LIST:
         Stats.MAP[effect.pos.y][effect.pos.x] = effect.symbol
         if effect not in Stats.EFFECT_MAP[effect.pos.y][effect.pos.x]:
@@ -30,6 +31,7 @@ def init_map():
         for c in p.avail_characters:
             Stats.MAP[c.pos.y][c.pos.x] = c.symbol
             Stats.COLOR_COORD[(c.pos.x, c.pos.y)] = p.color
+            Stats.CHAR_MAP[c.pos.y][c.pos.x] = c
             if Stats.EFFECT_MAP[c.pos.y][c.pos.x] is not None:
                 for eff in Stats.EFFECT_MAP[c.pos.y][c.pos.x]:
                     if eff.duration > 0:
@@ -56,6 +58,7 @@ def check_characters():
             if c.health <= 0:
                 p.avail_characters.remove(c)
                 del p.sym_to_char_map[c.symbol]
+                Stats.DUMPS.append(f'{RED}{c.name} has been defeated!{RESET}')
 
 def init_lists_and_maps(p1, p2):
     Stats.PLAYER_LIST.append(p1)
@@ -72,5 +75,5 @@ def init_lists_and_maps(p1, p2):
     p1.sym_to_char_map = p1_map
     p2.sym_to_char_map = p2_map
     
-    Stats.EFFECT_MAP = [[[None for _ in range(0)] for _ in range(Stats.MAP_SIZE.y)] for _ in range(Stats.MAP_SIZE.x)]
-    
+    Stats.EFFECT_MAP = [[[None for _ in range(0)] for _ in range(Stats.MAP_SIZE.x)] for _ in range(Stats.MAP_SIZE.y)]
+   

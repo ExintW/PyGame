@@ -1,6 +1,8 @@
 from player.character import *
 from player.classes import *
 from globalss.globals import *
+from game_stats.UI_utils import *
+from game_stats.game_stats import *
 
 def get_player_info(num):
     while (1):
@@ -11,6 +13,25 @@ def get_player_info(num):
             return Warrior(text[0], text[1].upper(), -1)
         else:
             print(f'{RED}Wrong player info!{RESET}')
+
+def main_prompt(player, opponent):
+    apply_map_effects() 
+    for c in player.avail_characters:  
+        check_characters()
+        init_map()
+        print_players_stats()
+        divide_line()
+        dump_info()
+        clear_dump()
+        print_map_2D()
+        print(f'{YELLOW}ROUND: {Stats.ROUND}{RESET}')
+        prompt_move(c, opponent)
+        check_characters()
+        if check_end():
+            return False
+        init_map()
+        divide_line()
+    return True
 
 def prompt_move(c, target):
     """
@@ -27,7 +48,7 @@ def prompt_move(c, target):
     """
     while(1):
         end_round = False
-        text = input(f'{GREEN}Enter the action for {RESET}{c.color}{c.name}{RESET}{GREEN} (MOV, ATK, ABL, END): {RESET}').split()
+        text = input(f'{GREEN}Enter the action for {RESET}{c.color}{c.name}{RESET}{GREEN} (MOV, ATK, ABL, SIG, END): {RESET}').split()
         
         match text[0].upper():     # text[0].upper() is the first arg       
             case 'END':
@@ -45,7 +66,7 @@ def prompt_move(c, target):
                 except:
                     print(f'{RED}Error in Attack!{RESET}')
             case 'ABL':
-                # try:
+                try:
                     if int(text[1]) > len(c.abilities):
                         print(f'{RED}Invalid ability number!{RESET}')
                     elif len(text) == 2 and c.abilities[int(text[1])-1].ability_type == Ability_Type.BUFF_ABIL: # For buff abilities: abl <#> -> means apply to self
@@ -54,8 +75,13 @@ def prompt_move(c, target):
                         end_round = c.abilities[int(text[1])-1].use(c, target.sym_to_char_map[text[2].upper()])
                     else:
                         end_round = c.abilities[int(text[1])-1].use(c, Stats.NAME_TO_PLAYER_MAP[text[2].upper()].sym_to_char_map[text[3].upper()]) # "abil <abil #> <player> <char symbol>"
-                # except:
-                #     print(f'{RED}Error in Ability!{RESET}')
+                except:
+                    print(f'{RED}Error in Ability!{RESET}')
+            case 'SIG':
+                try:
+                    end_round = c.sig_ability.use(from_player=c.player)
+                except:
+                    print(f'{RED}Error in Sig Ability!{RESET}')
             case _:
                 print(f'{RED}Invalid Move!{RESET}')
             

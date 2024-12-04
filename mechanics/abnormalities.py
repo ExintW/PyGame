@@ -1,4 +1,5 @@
 from globalss.colors import *
+from globalss.globals import *
 
 class Abnormality:
     def __init__(self, name=None, duration=0, character=None):
@@ -18,7 +19,7 @@ class Burn(Abnormality):
         
         self.character.health -= self.damage
         self.duration -= 1
-        print(f"{RED}Applied {self.name} to {self.character.name}: -{self.damage} health!{RESET}")
+        Stats.DUMPS.append(f"{RED}Applied {self.name} to {self.character.name}: -{self.damage} health!{RESET}")
         
         if self.duration == 0 or self.character.health <= 0:
             return False

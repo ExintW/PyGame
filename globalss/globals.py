@@ -15,6 +15,7 @@ class Ability_Type(Enum):
     ATK_ABIL = 'Attack Ability'
     BUFF_ABIL = 'Buff Ability'
     AB_ABIL = 'Abnormality Ability'
+    SIG_ABIL = 'Signiture Ability'
 
 @dataclass
 class Position:
@@ -31,3 +32,5 @@ class Stats:
     COLOR_COORD = {}   # Used for coloring in 2D Map
     MAP_EFFECT_LIST = []
     EFFECT_MAP = [[[]]]
+    CHAR_MAP = [[]]
+    DUMPS = []

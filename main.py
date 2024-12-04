@@ -13,6 +13,7 @@ import sys
 
 p1 = Player(name='P1', color=BLUE)
 p2 = Player(name='P2', color=RED)
+
 p1_Archer = Archer(player=p1, name='p1 Archer', profession='ARCHER', pos=Position(3, 3))
 p1_Warrior = Warrior(player=p1, name='p1 Warrior', profession='WARRIOR', pos=Position(3, 4))
 p1_Mage = Mage(player=p1, name='p1 Mage', profession='MAGE', pos=Position(3, 5))
@@ -33,18 +34,6 @@ p2.avail_characters = p2.characters
 # Initialize global/player lists and maps
 init_lists_and_maps(p1, p2)
 
-Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(5, 5), damage=1))
-Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(5, 4), damage=1))
-Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(5, 3), damage=1))
-
-Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(4, 5), damage=1, from_player=p1))
-Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(4, 4), damage=1, from_player=p1))
-Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(4, 3), damage=1, from_player=p1))
-
-Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(6, 5), damage=1, from_player=p2))
-Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(6, 4), damage=1, from_player=p2))
-Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=3, pos=Position(6, 3), damage=1, from_player=p2))
-
 # Initialize Map
 init_map()
 
@@ -55,32 +44,12 @@ while(1):
     
     if Stats.CUR_MOVE == 'p1':
         # p1 round
-        apply_map_effects() 
-        for c in p1.avail_characters:  
-            init_map()
-            print_players_stats()
-            divide_line()
-            print_map_2D()
-            print(f'{YELLOW}ROUND: {Stats.ROUND}{RESET}')
-            prompt_move(c, p2)
-            check_characters()
-            if check_end():
-                sys.exit()
-            divide_line()
+        if not main_prompt(p1, p2):
+            sys.exit()
     else:
         # p2 round
-        apply_map_effects()
-        for c in p2.avail_characters:
-            init_map()
-            print_players_stats()
-            divide_line()
-            print_map_2D()
-            print(f'{YELLOW}ROUND: {Stats.ROUND}{RESET}')
-            prompt_move(c, p1)
-            check_characters()
-            if check_end():
-                sys.exit()
-            divide_line()
+        if not main_prompt(p2, p1):
+            sys.exit()
 
     Stats.ROUND += 1
     if Stats.CUR_MOVE == 'p1':

@@ -43,7 +43,7 @@ class Buff_Abilities:
             if len(list) > 0:
                 target.buff[buff_type].extend(list)
         source.mana -= self.mana_cost
-        print(f'{CYAN}Buff {self.name} applied to character: {target.name}!{RESET}')
+        Stats.DUMPS.append(f'{CYAN}Buff {self.name} applied to character: {target.name}!{RESET}')
         return True
 
 class Abnormality_Abilities:
@@ -74,9 +74,9 @@ class Abnormality_Abilities:
                 target.abnormalities.append(ab_copy)
                 ab_copy.character = target
         source.mana -= self.mana_cost
-        print(f"{CYAN}Abnormality: ", end="")
+        dump = f"{CYAN}Abnormality: "
         for ab in self.abnormalities:
-            print(f"{ab.name} ", end="")
-        print(f"applied to character: {target.name}!{RESET}")
+            dump += f"{ab.name} "
+        Stats.DUMPS.append(dump + f"applied to character: {target.name}!{RESET}")
 
         return True

@@ -1,14 +1,16 @@
 from globalss.globals import *
 from globalss.colors import *
+from game_stats.UI_utils import *
 
 class Character:
-    def __init__(self, player=None, name=None, profession=None, pos=None, abilities=None, range=0, damage=0, max_health=0, mobility=0, max_mana=0, symbol='/'):
+    def __init__(self, player=None, name=None, profession=None, pos=None, abilities=None, sig_ability=None, range=0, damage=0, max_health=0, mobility=0, max_mana=0, symbol='/'):
         self.player = player
         self.name = name
         self.profession = profession
         self.pos = pos                  # Position(x, y) @dataclass
         self.color = player.color
         self.abilities = abilities
+        self.sig_ability = sig_ability
         self.abnormalities = []
         self.map_effects = set()
         self.buff = {
@@ -39,6 +41,8 @@ class Character:
         print(f'\t{YELLOW}mobility: {self.mobility}{RESET}')
         print(f'\t{RED}damage: {self.damage}{RESET}')
         print(f'\t{BLUE}abilities: {(lambda lst : [abil.name for abil in lst])(self.abilities)}{RESET}')
+        if self.sig_ability is not None:
+            print(f'\t{YELLOW}signiture ability: {self.sig_ability.name}{RESET}')
         self.print_buffs()
         self.print_abnormalities()
         self.print_map_effects()
@@ -53,7 +57,7 @@ class Character:
             dmg = apply_dmg_buff(self, target, dmg_f)
             apply_range_buff(self)
             target.health -= dmg
-            print(f'{CYAN}Attack is successful: {target.name}: health - {dmg}{RESET}')
+            Stats.DUMPS.append(f'{CYAN}Attack is successful: {target.name}: health - {dmg}{RESET}')
             return True
         else:
             print(f'{CYAN}Not enough range!{RESET}')
@@ -69,22 +73,20 @@ class Character:
         elif (abs(del_x) + abs(del_y) <= cur_mobil and abs(del_x) + abs(del_y) != 0) or forced:
             if not forced:
                 apply_boost_buff(self)
+            previous_pos = Position(self.pos.x, self.pos.y)
             self.pos.x += del_x
             self.pos.y += del_y
-            flag = True
-            while (flag):
-                # for bouncing effect
-                for p in Stats.PLAYER_LIST:
-                    for c in p.avail_characters:
-                        if c != self and self.pos.x == c.pos.x and self.pos.y == c.pos.y:
-                            self.pos.x += del_x
-                            self.pos.y += del_y
-                            flag = True
-                            break
-                        else:
-                            flag = False
             
-            print(f'{CYAN}{self.name} moved to {self.pos}{RESET}')
+            while (Stats.CHAR_MAP[self.pos.y][self.pos.x] is not None):
+                # for bouncing effect
+                self.pos.x += del_x
+                self.pos.y += del_y
+                if not check_bounds(self.pos):
+                    self.pos = previous_pos
+                    print(f'{RED}Invalid move: out of bounds after bouncing!{RESET}')
+                    return False   
+            
+            Stats.DUMPS.append(f'{CYAN}{self.name} moved to {self.pos}{RESET}')
             self.map_effects.clear()
             return True
         else:

@@ -20,7 +20,7 @@ class Map_Burn(Map_effect):
             return False
         if target.player != self.from_player:  
             target.health -= self.damage
-            print(f"{RED}Applied {self.name} to {target.name}: -{self.damage} health!{RESET}")
+            Stats.DUMPS.append(f"{RED}Applied {self.name} to {target.name}: -{self.damage} health!{RESET}")
         
         if self.duration == 1 or target.health <= 0:
             return False

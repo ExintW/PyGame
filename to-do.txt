@@ -39,9 +39,11 @@ Need to detect duplicate buffs and add them together
 (Done) Prompt move modification for teams:
     - for each available character: prompt move
 
-Add class signiture abilities (Ult?):
+(Done) Add class signiture abilities (Ult?):
     - requries # rounds to enable
     - (?) limit num uses per game
+
+(Done) Add row/col numbering on map
 
 (Done) Add map effects:
     - Burning area
@@ -54,7 +56,7 @@ Add class signiture abilities (Ult?):
     - (?) currently abnormalities ignores def buffs
 
 ---------------------New Classes---------------------
-Mage class:
+(Done) Mage class:
     - buff related abilities
     - aoe damage related abilities
     - aoe debuff abilities
@@ -62,6 +64,9 @@ Mage class:
     - (Done) Ability: ignite
         - apply ignite to a target
         - burn damage for next few rounds
+    - (Done) Signiture: Blaze
+        - select a 3x3 area on the map
+        - apply map burn in that area
 
 Samurai class:
     - high close combat dmg
@@ -74,6 +79,8 @@ Samurai class:
         - horizontal only
         - high aoe line damage 
         - move self to end point
+    - (?) Passive: Slash
+        - atks can attack all enemies in range
 
 Knight class:
     - High defence
@@ -92,6 +99,10 @@ Rogue class:
     - teleport ability
     - less defence/health
 
+Healer class:
+    - Signiture: Heal
+        - single heal
+    - ability: aoe heal
 
 ---------------------Class Updates---------------------
 Warrior Class:
@@ -107,6 +118,6 @@ Warrior Class:
 Archer Class:
     - Signiture: Sentinel
         - Cannot move unless canceled
-        - Apply "movement penalty" to nearby enemies
+        - Apply "movement penalty" to nearby areas
             - when enemies in range performs any action (mov, atk, etc.)
             - automatically attack them even when not in archer's round.
