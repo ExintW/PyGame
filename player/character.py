@@ -13,6 +13,7 @@ class Character:
         self.sig_ability = sig_ability
         self.abnormalities = []
         self.map_effects = set()
+        self.channeling = -1
         self.buff = {
             Buff_Type.ATK_BUFF : [],    # affects atk dmg
             Buff_Type.ATK_DEBUFF : [],
@@ -34,7 +35,11 @@ class Character:
         self.symbol = symbol 
     
     def print_stat(self):
-        print(f'{PURPLE}Character: {self.profession}{RESET}')
+        print(f'{PURPLE}Character: {self.profession}{RESET} ', end='')
+        if self.channeling > 0:
+            print(f'{YELLOW}Channeling ({self.channeling} Rounds left)')
+        else:
+            print()
         print(f'\t{GREEN}health: {self.health}{RESET}', f'{BG_GREEN} {RESET}'*self.health + f'{BG_DARK_GREEN} {RESET}'*(self.max_health - self.health))
         print(f'\t{BLUE}mana: {self.mana}{RESET}', f'{BG_BLUE} {RESET}'*self.mana + f'{BG_DARK_BLUE} {RESET}'*(self.max_mana - self.mana))
         print('\trange:', self.range)

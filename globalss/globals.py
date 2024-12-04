@@ -16,6 +16,7 @@ class Ability_Type(Enum):
     BUFF_ABIL = 'Buff Ability'
     AB_ABIL = 'Abnormality Ability'
     SIG_ABIL = 'Signiture Ability'
+    HEAL_ABIL = 'Heal Ability'
 
 @dataclass
 class Position:
