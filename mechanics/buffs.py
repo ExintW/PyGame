@@ -1,8 +1,8 @@
-from player.player import *
-from globals.globals import Buff_Type
+from player.character import *
+from globalss.globals import Buff_Type
 
 class Buff:
-    def __init__(self, name='', value=0, type=Buff_Type.ATK_BUFF, duration=1):
+    def __init__(self, name=None, value=0, type=Buff_Type.ATK_BUFF, duration=1):
         self.name = name
         self.value = value
         self.type = type

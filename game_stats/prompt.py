@@ -1,6 +1,8 @@
-from player.player import *
+from player.character import *
 from player.classes import *
-from globals.globals import *
+from globalss.globals import *
+from game_stats.UI_utils import *
+from game_stats.game_stats import *
 
 def get_player_info(num):
     while (1):
@@ -12,47 +14,89 @@ def get_player_info(num):
         else:
             print(f'{RED}Wrong player info!{RESET}')
 
-def prompt_move(player):
+def main_prompt(player, opponent):
+    apply_map_effects() 
+    for c in player.avail_characters:  
+        check_characters()
+        init_map()
+        print_players_stats()
+        divide_line()
+        dump_info()
+        clear_dump()
+        print_map_2D()
+        print(f'{YELLOW}ROUND: {Stats.ROUND}{RESET}')
+        prompt_move(c, opponent)
+        check_characters()
+        if check_end():
+            return False
+        init_map()
+        divide_line()
+    return True
+
+def prompt_move(c, target):
     """
     Prompt format:
         MOVE:
-            "mov <steps>" (steps can be pos or neg)
+            "mov <del_x> < <del_y>" (can be pos or neg)
         ATTACK:
-            "atk <target name>"
+            "atk <target character symbol>"
         ABILITIES:
-            "abl <ability number> <target name>
+            "abl <ability number> <player> <char symbol>"
+            "abl <ability number>"  -> for self buff abilities
+            "abl <ability number> <char symbol>" -> for atk or heal abilities
+        SIG:
+            "sig"
+        END:
+            "end"
     """
     while(1):
         end_round = False
-        text = input(f'{GREEN}Enter the action for {RESET}{player.color}{player.name}{RESET}{GREEN} (MOV, ATK, ABL, END): {RESET}').split()
         
-        if text[0].upper() == 'END':
-            print(f'{CYAN}Round Ended{RESET}')
-            end_round = True
+        if c.sig_ability != None and c.channeling != -1:
+            end_round = c.sig_ability.channel()
+            if not end_round:
+                print(f'{RED}Signiture ability use failed!{RESET}')
             
-        elif text[0].upper() == 'MOV':
-            try:
-                end_round = player.move(int(text[1]))
-            except:
-                print(f'{RED}Error in Move!{RESET}')
-        elif text[0].upper() == 'ATK':
-            try: 
-                end_round = player.attack(NAME_TO_PLAYER_MAP[text[1]])
-            except:
-                print(f'{RED}Error in Attack!{RESET}')
-        elif text[0].upper() == 'ABL':
-            try:
-                if int(text[1]) > len(player.abilities):
-                    print(f'{RED}Invalid ability number!{RESET}')
-            except:
-                print(f'{RED}Invalid ability number!')
-            else:
-                try:
-                    end_round = player.abilities[int(text[1])-1].use(player, NAME_TO_PLAYER_MAP[text[2]])
-                except:
-                    print(f'{RED}Error in Ability!{RESET}')
-        else:
-            print(f'{RED}Invalid Move!{RESET}')
-        
+        elif not end_round:
+            text = input(f'{GREEN}Enter the action for {RESET}{c.color}{c.name}{RESET}{GREEN} (MOV, ATK, ABL, SIG, END): {RESET}').split()
+            
+            match text[0].upper():     # text[0].upper() is the first arg       
+                case 'END':
+                    print(f'{CYAN}Round Ended{RESET}')
+                    end_round = True
+                    
+                case 'MOV':
+                    try:
+                        end_round = c.move(int(text[1]), -int(text[2]))
+                    except:
+                        print(f'{RED}Error in Move!{RESET}')
+                case 'ATK':
+                    try: 
+                        end_round = c.attack(target.sym_to_char_map[text[1]])  
+                    except:
+                        print(f'{RED}Error in Attack!{RESET}')
+                case 'ABL':
+                    # try:
+                        if int(text[1]) > len(c.abilities):
+                            print(f'{RED}Invalid ability number!{RESET}')
+                        elif len(text) == 2 and (c.abilities[int(text[1])-1].ability_type == Ability_Type.BUFF_ABIL or c.abilities[int(text[1])-1].ability_type == Ability_Type.HEAL_ABIL): # For buff abilities: abl <#> -> means apply to self
+                            end_round = c.abilities[int(text[1])-1].use(target=c)
+                        elif len(text) == 3 and ((c.abilities[int(text[1])-1].ability_type == Ability_Type.ATK_ABIL) or (c.abilities[int(text[1])-1].ability_type == Ability_Type.AB_ABIL)):  # For atk abilities: abl <#> <char>
+                            end_round = c.abilities[int(text[1])-1].use(target=target.sym_to_char_map[text[2].upper()])
+                        elif len(text) == 3 and c.abilities[int(text[1])-1].ability_type == Ability_Type.HEAL_ABIL:
+                            end_round = c.abilities[int(text[1])-1].use(target=c.player.sym_to_char_map[text[2].upper()])
+                        else:
+                            end_round = c.abilities[int(text[1])-1].use(target=Stats.NAME_TO_PLAYER_MAP[text[2].upper()].sym_to_char_map[text[3].upper()]) # "abil <abil #> <player> <char symbol>"
+                    # except:
+                    #     print(f'{RED}Error in Ability!{RESET}')
+                case 'SIG':
+                    try:
+                        end_round = c.sig_ability.channel()
+                    except:
+                        print(f'{RED}Error in Sig Ability!{RESET}')
+                case _:
+                    print(f'{RED}Invalid Move!{RESET}')
+            
         if end_round:
+            c.apply_abnormalities()
             return

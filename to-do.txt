@@ -1,6 +1,5 @@
 add stamina for players
 add stamina cost for attacks, moves and abilities
-
 or maybe no stamina and each round players can only use attack or abilities or move Once
 
 (Done) Ability: "Charge" for warriors
@@ -26,17 +25,99 @@ Need to detect duplicate buffs and add them together
     - player folder: player.py, player_class.py
     - globals folder: globals.py, colors.py
 
--------------------version 1.0----------------------
-Change map to 2D:
-    - need to change movement calculation
-    - need to change atk range calculation
+---------------------------------version 1.0------------------------------------
+(Done) Change map to 2D:
+    - (Done) need to change movement calculation
+    - (Done) need to change atk range calculation
     - (?)moving diagonaly takes 2 mobility, but atk only takes 1 range
-    - Allow multiple characters on each team
+    - (Done) Current map size: 11 x 9
+    - (Done) new print_map_2D
+    - (Done) Need to add colored character symbols on map
 
-Add mage class:
+(Done) Allow multiple characters on each team
+
+(Done) Prompt move modification for teams:
+    - for each available character: prompt move
+
+(Done) Add class signiture abilities (Ult?):
+    - requries # rounds to enable
+    - (?) limit num uses per game
+
+(Done) Add row/col numbering on map
+
+(Done) Add map effects:
+    - Burning area
+    - movement penalty area
+    - Shield
+
+(Done) Add abnormality mechanic:
+    - each character has its own list of abnormalities
+    - calculate abnormality damage at end of each character's round
+    - (?) currently abnormalities ignores def buffs
+
+---------------------New Classes---------------------
+(Done) Mage class:
     - buff related abilities
-
-Add sorcerer class:
     - aoe damage related abilities
     - aoe debuff abilities
         - burning, electricute (vulnerable), etc..
+    - (Done) Ability: ignite
+        - apply ignite to a target
+        - burn damage for next few rounds
+    - (Done) Signiture: Blaze
+        - select a 3x3 area on the map
+        - apply map burn in that area
+
+Samurai class:
+    - high close combat dmg
+    - moderate high defence/health
+    - less mobility
+    - Ability: Power Slash
+        - horizontal only
+        - high aoe line damage
+    - Signiture: Dash Slash
+        - horizontal only
+        - high aoe line damage 
+        - move self to end point
+    - (?) Passive: Slash
+        - atks can attack all enemies in range
+
+Knight class:
+    - High defence
+    - (?) team defence buff
+    - less damage
+    - less mobility and range
+    - Signiture: Shield
+        - block any atk and movement in vertical 3 blocks
+        ...|...
+        ...K...
+        ...|...
+
+Rogue class:
+    - high close combat dmg
+    - high mobility
+    - teleport ability
+    - less defence/health
+
+Healer class:
+    - Signiture: Heal
+        - single heal
+    - ability: aoe heal
+
+---------------------Class Updates---------------------
+Warrior Class:
+    - more movement related abilities/buffs
+    - more self-apllied atack buff
+    - (?) rage related mechanics
+    - Signiture: Frenzy
+        - buff: atk damage
+        - buff: mobility
+        - (?) Can do 2 moves in 1 round
+        - reduce health or defence debuff
+
+Archer Class:
+    - Signiture: Sentinel
+        - Cannot move unless canceled
+        - Apply "movement penalty" to nearby areas
+            - when enemies in range performs any action (mov, atk, etc.)
+            - automatically attack them even when not in archer's round.

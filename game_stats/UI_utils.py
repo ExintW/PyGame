@@ -1,26 +1,49 @@
-from globals.colors import *
-from player.player import *
-from globals.globals import *
+from globalss.colors import *
+from player.character import *
+from globalss.globals import *
 
 def divide_line():
     print(f'{CYAN}--------------------------------------------------------------------------------------------{RESET}')
 
-def print_map():
-    """
-    Currently only supports 2 players
-    """
-    left_player = PLAYER_LIST[0]
-    right_player = PLAYER_LIST[1]
-
-    for player in PLAYER_LIST:
-        if player.pos < left_player.pos:
-            right_player = left_player
-            left_player = player
-        elif player.pos > left_player.pos:
-            right_player = player
-
-    left_lines = int(((MAP_SIZE - 1) / 2) + left_player.pos)
-    center_lines = int(abs(left_player.pos - right_player.pos) - 1)
-    right_lines = int(((MAP_SIZE - 1) / 2) - right_player.pos)
+def print_map_2D():
+    # Print col number
+    print("   ", end="")
+    for col in range(Stats.MAP_SIZE.x):
+        print(col+1, end="")
+        if col < 9:
+            print('  ', end="")
+        else:
+            print(' ', end="")
+    print()
     
-    print(f'_'*left_lines + f'{left_player.color}{left_player.name}{RESET}' + f'_'*center_lines + f'{right_player.color}{right_player.name}{RESET}' + f'_'*right_lines)
+    for row in range(Stats.MAP_SIZE.y):
+        # print row number
+        print(row+1, end="")
+        if row < 9:
+            print('  ', end="")
+        else:
+            print(' ', end="")
+        
+        # print map 
+        for col in range(Stats.MAP_SIZE.x):
+            if (Stats.MAP[row][col] == '.'):
+                print('.', end="")
+            elif (col, row) in Stats.COLOR_COORD:
+                print(f"{Stats.COLOR_COORD[(col, row)]}{Stats.MAP[row][col]}{RESET}", end="")
+            else:
+                print(f"{Stats.MAP[row][col]}", end="")
+            print("  ", end="")
+        print()
+    
+def check_bounds(pos):
+    if (pos.x >= Stats.MAP_SIZE.x) or (pos.x < 0) or (pos.y >= Stats.MAP_SIZE.y) or (pos.y < 0):
+        return False
+    else:
+        return True
+
+def dump_info():
+    for str in Stats.DUMPS:
+        print(str)
+
+def clear_dump():
+    Stats.DUMPS.clear()
