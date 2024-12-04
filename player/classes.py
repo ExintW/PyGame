@@ -33,7 +33,7 @@ class Mage(Character):
         super().__init__(player=player, name=name, profession=profession, pos=pos,
                          abilities=[Ignite(character=self)],
                          sig_ability=Blaze(character=self),
-                         range=2,
+                         range=3,
                          damage=1,
                          max_health=5,
                          mobility=1,
@@ -44,7 +44,7 @@ class Healer(Character):
     def __init__(self, player=None, name=None, profession='HEALER', pos=0):
         super().__init__(player=player, name=name, profession=profession, pos=pos,
                          abilities=[Heal(character=self)],
-                         range=2,
+                         range=3,
                          damage=1,
                          max_health=5,
                          mobility=1,

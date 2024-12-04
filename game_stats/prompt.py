@@ -43,6 +43,9 @@ def prompt_move(c, target):
         ABILITIES:
             "abl <ability number> <player> <char symbol>"
             "abl <ability number>"  -> for self buff abilities
+            "abl <ability number> <char symbol>" -> for atk or heal abilities
+        SIG:
+            "sig"
         END:
             "end"
     """
