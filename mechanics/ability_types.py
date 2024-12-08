@@ -115,6 +115,9 @@ class Heal_Abilities:
         self.ability_type = Ability_Type.HEAL_ABIL
     
     def use(self, target):
+        if target.health == target.max_health:
+            print(f"{RED}Target health already at max!{RESET}")
+            return False
         if self.character.mana < self.mana_cost:
             print(f"{RED}Not enough mana!{RESET}")
             return False
@@ -124,11 +127,14 @@ class Heal_Abilities:
         if pos_diff(self.character, target) > self.character.range:
             print(f"{CYAN}Not enough range!{RESET}")
             return False
+        health_restored = 0
+        prev_health = target.health
         if target.health + self.heal_amount > target.max_health:
             target.health = target.max_health
         else:
             target.health += self.heal_amount
         self.character.mana -= self.mana_cost
+        health_restored = target.health - prev_health
         
-        Stats.DUMPS.append(f'{GREEN}Heal applied to {target.name}! Health + {self.heal_amount}{RESET}')
+        Stats.DUMPS.append(f'{GREEN}Heal applied to {target.name}! Health + {health_restored}{RESET}')
         return True
