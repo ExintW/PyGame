@@ -5,7 +5,9 @@ from globalss.colors import *
 from mechanics.abnormalities import *
 from mechanics.map_effects import *
 from game_stats.UI_utils import *
-    
+
+######################################  ATK ABILITIES  ######################################
+
 class Power_Shot(Atk_Abilities):
     def __init__(self,
                  name='Power Shot', 
@@ -45,6 +47,7 @@ class Power_Shot(Atk_Abilities):
         self.character.mana -= self.mana_cost
         return True
 
+######################################  BUFF ABILITIES  ######################################
 
 class Charge(Buff_Abilities): 
     def __init__(self,
@@ -63,7 +66,17 @@ class Precision(Buff_Abilities):
                  mana_cost=4,
                  character=None):
         super().__init__(range_buff=range_buff, name = name, mana_cost= mana_cost, character= character)
-        
+
+class Fortify(Buff_Abilities):
+    def __init__(self,
+                 def_buff=[Buff(name='Fortify: def+1', value=1, type=Buff_Type.DEF_BUFF, duration=2)],
+                 name = 'Fortify',
+                 mana_cost=4,
+                 character=None):
+        super().__init__(def_buff=def_buff, name = name, mana_cost= mana_cost, character= character)
+
+######################################  AB ABILITIES  ######################################
+
 class Ignite(Abnormality_Abilities):
     def __init__(self,
                  name='Ignite',
@@ -71,6 +84,8 @@ class Ignite(Abnormality_Abilities):
                  mana_cost=5,
                  character=None):
         super().__init__(name=name, abnormalities=abnormalities, mana_cost=mana_cost, character=character)
+
+######################################  SIG ABILITIES  ######################################
 
 class Blaze(Signiture_Abilities):
     def __init__(self,
@@ -102,6 +117,8 @@ class Blaze(Signiture_Abilities):
             print(f'{RED}Error position!{RESET}')
             return False
 
+######################################  HEAL ABILITIES  ######################################
+
 class Heal(Heal_Abilities):
     def __init__(self,
                  character=None,
@@ -110,3 +127,4 @@ class Heal(Heal_Abilities):
                  heal_amount=2
                  ):
         super().__init__(name=name, mana_cost=mana_cost, heal_amount=heal_amount, character=character)
+

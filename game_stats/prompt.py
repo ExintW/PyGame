@@ -76,7 +76,7 @@ def prompt_move(c, target):
                     except:
                         print(f'{RED}Error in Attack!{RESET}')
                 case 'ABL':
-                    # try:
+                    try:
                         if int(text[1]) > len(c.abilities):
                             print(f'{RED}Invalid ability number!{RESET}')
                         elif len(text) == 2 and (c.abilities[int(text[1])-1].ability_type == Ability_Type.BUFF_ABIL or c.abilities[int(text[1])-1].ability_type == Ability_Type.HEAL_ABIL): # For buff abilities: abl <#> -> means apply to self
@@ -87,8 +87,8 @@ def prompt_move(c, target):
                             end_round = c.abilities[int(text[1])-1].use(target=c.player.sym_to_char_map[text[2].upper()])
                         else:
                             end_round = c.abilities[int(text[1])-1].use(target=Stats.NAME_TO_PLAYER_MAP[text[2].upper()].sym_to_char_map[text[3].upper()]) # "abil <abil #> <player> <char symbol>"
-                    # except:
-                    #     print(f'{RED}Error in Ability!{RESET}')
+                    except:
+                        print(f'{RED}Error in Ability!{RESET}')
                 case 'SIG':
                     try:
                         end_round = c.sig_ability.channel()
