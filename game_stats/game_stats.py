@@ -20,6 +20,7 @@ def print_players_stats():
 def init_map():
     Stats.MAP = [["." for _ in range(Stats.MAP_SIZE.x)] for _ in range(Stats.MAP_SIZE.y)]
     Stats.CHAR_MAP = [[None for _ in range(Stats.MAP_SIZE.x)] for _ in range(Stats.MAP_SIZE.y)]
+    Stats.COLOR_COORD = {}
     for effect in Stats.MAP_EFFECT_LIST:
         Stats.MAP[effect.pos.y][effect.pos.x] = effect.symbol
         if effect not in Stats.EFFECT_MAP[effect.pos.y][effect.pos.x]:

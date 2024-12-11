@@ -45,6 +45,8 @@ Need to detect duplicate buffs and add them together
 
 (Done) Add row/col numbering on map
 
+(Done) Added range indication map for sig abilities
+
 (Done) Add map effects:
     - Burning area
     - movement penalty area

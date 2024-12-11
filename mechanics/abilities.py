@@ -101,20 +101,25 @@ class Blaze(Signiture_Abilities):
         
     
     def use(self):
+        print_range_map(self.character)
         text = input(f'{GREEN}Enter the position to apply {YELLOW}{self.name}{RESET}{GREEN} (x, y): {RESET}').split()
         try: 
             pos = Position(int(text[0]) - 1, int(text[1]) - 1)
             if not check_bounds(pos):
-                print(f'{RED}Error position!{RESET}')
+                print(f'{RED}Error: Position out of bound!{RESET}')
                 return False
-            
-            for row in range(pos.y-1, pos.y+2):
-                for col in range(pos.x-1, pos.x+2):
-                    if check_bounds(Position(col, row)):
-                        Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=self.duration, pos=Position(col, row), damage=self.damage, from_player=self.character.player))
-            return True
+                
+            elif abs(pos.x - self.character.pos.x) + abs(pos.y - self.character.pos.y) > self.character.range:
+                print(f'{RED}Error: Position out of range!{RESET}')
+                return False
+            else:
+                for row in range(pos.y-1, pos.y+2):
+                    for col in range(pos.x-1, pos.x+2):
+                        if check_bounds(Position(col, row)):
+                            Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=self.duration, pos=Position(col, row), damage=self.damage, from_player=self.character.player))
+                return True
         except:
-            print(f'{RED}Error position!{RESET}')
+            print(f'{RED}Error in position!{RESET}')
             return False
 
 ######################################  HEAL ABILITIES  ######################################
