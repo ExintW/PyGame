@@ -57,13 +57,19 @@ Need to detect duplicate buffs and add them together
     - calculate abnormality damage at end of each character's round
     - (?) currently abnormalities ignores def buffs
 
-Add CC abilities:
+(Done) Add CC abilities:
     - can be abnormality type
     - create a new enum for cc types: stun, root, etc.
 
-Can let cc be abnormalities:
+(Done) Can let cc be abnormalities:
     - add a type attribute to abnormalities
     - can be CC_TYPE or AB_TYPE
+
+Add new class "Projectile"
+    - attributes: symbol, speed, direction, from_character
+    - function: hit(), move()
+    - move() -> parent class function
+    - hit() -> can be child class
 
 ---------------------New Classes---------------------
 (Done) Mage class:
