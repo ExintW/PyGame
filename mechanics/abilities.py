@@ -132,18 +132,22 @@ class Blaze(Signiture_Abilities):
             print(f'{RED}Error in position!{RESET}')
             return False
 
-class Arrow(Signiture_Abilities):
+class Ashe_Arrow(Signiture_Abilities):
     def __init__(self, 
                  character=None,
-                 name='Arrow',
+                 name='Ashe Arrow',
                  channeling=1,
-                 damage=2,
-                 duration=2,
-                 speed=1):
+                 damage=0,
+                 duration=0,
+                 speed=1,
+                 dmg_growth=1,
+                 stun_growth=0.5):
         super().__init__(name=name, channeling=channeling, character=character)
         self.damage = damage
         self.stun_duration = duration
         self.speed = speed
+        self.dmg_growth = dmg_growth
+        self.stun_growth = stun_growth
 
     def use(self):
         text = input(f'{GREEN}Enter the direction of the Arrow (e.g. 1 0 for ->): {RESET}').split()
@@ -155,8 +159,11 @@ class Arrow(Signiture_Abilities):
         if direction.x > 1 or direction.x < -1 or direction.y > 1 or direction.y < -1:
             print(f"{RED}Error in direction: Please only enter -1, 0, or 1!{RESET}")   
             return False
-        position = Position(self.character.pos.x + direction.x, self.character.pos.y + direction.y)
-        arr = Arrow(pos=position, direction=direction, from_character=self.character, speed=self.speed, damage=self.damage, stun_duration=self.stun_duration)
+        position = Position((self.character.pos.x + direction.x), (self.character.pos.y - direction.y))
+        arr = Arrow(pos=position, direction=direction, from_character=self.character, speed=self.speed, damage=self.damage, stun_duration=self.stun_duration,
+                    dmg_growth=self.dmg_growth,
+                    stun_growth=self.stun_growth)
+        
         Stats.PROJECTILE_LIST.append(arr)
         return True
         # except:

@@ -34,8 +34,8 @@ def init_map():
         Stats.MAP[proj.pos.y][proj.pos.x] = proj.symbol
         if proj not in Stats.PROJ_MAP[proj.pos.y][proj.pos.x]:
             Stats.PROJ_MAP[proj.pos.y][proj.pos.x].append(proj)
-        if proj.from_player is not None:
-            Stats.COLOR_COORD[(proj.pos.x, proj.pos.y)] = proj.from_player.color
+        if proj.from_character is not None:
+            Stats.COLOR_COORD[(proj.pos.x, proj.pos.y)] = proj.from_character.color
             
     for p in Stats.PLAYER_LIST:
         for c in p.avail_characters:

@@ -65,7 +65,7 @@ Need to detect duplicate buffs and add them together
     - add a type attribute to abnormalities
     - can be CC_TYPE or AB_TYPE
 
-Add new class "Projectile"
+(Done) Add new class "Projectile"
     - attributes: symbol, speed, direction, from_character
     - function: hit(), move()
     - move() -> parent class function
@@ -132,9 +132,6 @@ Warrior Class:
         - reduce health or defence debuff
 
 Archer Class:
-    - Signiture: Sentinel
-        - Cannot move unless canceled
-        - Apply "movement penalty" to nearby areas
-            - when enemies in range performs any action (mov, atk, etc.)
-            - automatically attack them even when not in archer's round.
     - Signiture: Ashe Ult
+        - Projectile
+        - Damage and stun_duration scales with move distance

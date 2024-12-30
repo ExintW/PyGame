@@ -19,7 +19,7 @@ class Projectile:
             return True
         for i in range(self.speed):
             self.pos.x += self.direction.x
-            self.pos.y += self.direction.y
+            self.pos.y -= self.direction.y
             if not check_bounds(self.pos):
                 return True
             if self.check_hit():
@@ -37,7 +37,7 @@ class Projectile:
         return False
 
 class Arrow(Projectile):
-    def __init__(self, name='Arrow', pos=None, direction=None, from_character=None, speed=None, damage=0, stun_duration=0):
+    def __init__(self, name='Arrow', pos=None, direction=None, from_character=None, speed=None, damage=0, stun_duration=0, dmg_growth=0, stun_growth=0):
         if direction == Position(1, 0):
             symbol = '→'
         elif direction == Position(1, 1):
@@ -60,6 +60,9 @@ class Arrow(Projectile):
         self.damage = damage
         self.stun_duration = stun_duration
         self.name = name
+        self.init_pos = copy.deepcopy(pos)
+        self.dmg_growth = dmg_growth
+        self.stun_growth = stun_growth
     
     def hit(self):
         target = Stats.CHAR_MAP[self.pos.y][self.pos.x]
@@ -67,6 +70,15 @@ class Arrow(Projectile):
             print(f"{RED}Error in Arrow: no character in this position!{RESET}")
             return False
         if target.health > 0:
+            # Calculate dmg
+            x_diff = abs(self.pos.x - self.init_pos.x)
+            y_diff = abs(self.pos.y - self.init_pos.y)
+            larger_diff = x_diff
+            if y_diff > x_diff:
+                larger_diff = y_diff
+            self.damage += int(larger_diff * self.dmg_growth)
+            self.stun_duration += int(larger_diff * self.stun_growth)
+            
             target.health -= self.damage
             
             # Add stun to target
