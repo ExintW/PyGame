@@ -151,24 +151,24 @@ class Ashe_Arrow(Signiture_Abilities):
 
     def use(self):
         text = input(f'{GREEN}Enter the direction of the Arrow (e.g. 1 0 for ->): {RESET}').split()
-        #try:
-        if len(text) != 2:
-            print(f"{RED}Error in direction: Please only enter 2 numbers!{RESET}")
+        try:
+            if len(text) != 2:
+                print(f"{RED}Error in direction: Please only enter 2 numbers!{RESET}")
+                return False
+            direction = Position(int(text[0]), int(text[1]))
+            if direction.x > 1 or direction.x < -1 or direction.y > 1 or direction.y < -1:
+                print(f"{RED}Error in direction: Please only enter -1, 0, or 1!{RESET}")   
+                return False
+            position = Position((self.character.pos.x + direction.x), (self.character.pos.y - direction.y))
+            arr = Arrow(pos=position, direction=direction, from_character=self.character, speed=self.speed, damage=self.damage, stun_duration=self.stun_duration,
+                        dmg_growth=self.dmg_growth,
+                        stun_growth=self.stun_growth)
+            
+            Stats.PROJECTILE_LIST.append(arr)
+            return True
+        except:
+            print(f"{RED}Error in direction!{RESET}")
             return False
-        direction = Position(int(text[0]), int(text[1]))
-        if direction.x > 1 or direction.x < -1 or direction.y > 1 or direction.y < -1:
-            print(f"{RED}Error in direction: Please only enter -1, 0, or 1!{RESET}")   
-            return False
-        position = Position((self.character.pos.x + direction.x), (self.character.pos.y - direction.y))
-        arr = Arrow(pos=position, direction=direction, from_character=self.character, speed=self.speed, damage=self.damage, stun_duration=self.stun_duration,
-                    dmg_growth=self.dmg_growth,
-                    stun_growth=self.stun_growth)
-        
-        Stats.PROJECTILE_LIST.append(arr)
-        return True
-        # except:
-        #     print(f"{RED}Error in direction!{RESET}")
-        #     return False
         
         
 ######################################  HEAL ABILITIES  ######################################
