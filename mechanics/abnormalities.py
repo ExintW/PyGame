@@ -12,6 +12,7 @@ class Burn(Abnormality):
         super().__init__(name, duration, character)
         
         self.damage = damage
+        self.type = AB_Type.BURN
     
     def apply(self):
         if self.duration == 0 or self.character.health <= 0:
@@ -21,6 +22,21 @@ class Burn(Abnormality):
         self.duration -= 1
         Stats.DUMPS.append(f"{RED}Applied {self.name} to {self.character.name}: -{self.damage} health!{RESET}")
         
+        if self.duration == 0 or self.character.health <= 0:
+            return False
+        return True
+
+class Stun(Abnormality):
+    def __init__(self, name='Stun', duration=0, character=None):
+        super().__init__(name, duration, character)
+        
+        self.type = AB_Type.STUN
+        
+    def apply(self):
+        if self.duration == 0 or self.character.health <= 0:
+            return False
+        
+        self.duration -= 1
         if self.duration == 0 or self.character.health <= 0:
             return False
         return True

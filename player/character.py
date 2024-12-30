@@ -54,7 +54,6 @@ class Character:
         print('\tpos:', self.pos)
         
     def attack(self, target, dmg_f=0):     
-        # need to check if target is on same team
         if target == self:
             print(f'{CYAN}Cannot attack self!{RESET}')
             return False
@@ -122,13 +121,17 @@ class Character:
                 print(f"{eff.from_player.color}{eff.name}({eff.duration} Rounds) {RESET}{PURPLE}", end="")
         print(f"{RESET}")
     
-    def apply_abnormalities(self):
+    def apply_abnormalities(self, ab_type): # returns true if applied successfully
         if len(self.abnormalities) == 0:
-            return
+            return False
+        flag = False
         for ab in self.abnormalities.copy():
-            if not ab.apply():
-                self.abnormalities.remove(ab)
-        
+            if ab.type == ab_type:
+                if ab.duration > 0:
+                    flag = True
+                if not ab.apply():  # decrement ab, returns false if duration becomes 0
+                    self.abnormalities.remove(ab)
+        return flag
     
 def apply_dmg_buff(source, target, dmg=0):
     if dmg == 0:

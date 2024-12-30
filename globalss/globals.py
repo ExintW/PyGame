@@ -17,6 +17,11 @@ class Ability_Type(Enum):
     AB_ABIL = 'Abnormality Ability'
     SIG_ABIL = 'Signiture Ability'
     HEAL_ABIL = 'Heal Ability'
+    
+class AB_Type(Enum):
+    BURN = 'Burn'
+    STUN = 'Stun'
+    ROOT = 'Root'
 
 @dataclass
 class Position:

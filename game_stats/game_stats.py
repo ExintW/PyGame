@@ -48,7 +48,7 @@ def apply_map_effects():
                         
     for eff in Stats.MAP_EFFECT_LIST.copy():
         eff.duration -= 1
-        if eff.duration == 0:
+        if eff.duration <= 0:
             Stats.MAP_EFFECT_LIST.remove(eff)
             Stats.EFFECT_MAP[eff.pos.y][eff.pos.x].remove(eff)
         

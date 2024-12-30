@@ -85,6 +85,15 @@ class Ignite(Abnormality_Abilities):
                  character=None):
         super().__init__(name=name, abnormalities=abnormalities, mana_cost=mana_cost, character=character)
 
+class Bash(Abnormality_Abilities):
+    def __init__(self,
+                 name='Bash',
+                 abnormalities=[Stun(duration=1)],
+                 mana_cost=5,
+                 character=None):
+        super().__init__(name=name, abnormalities=abnormalities, mana_cost=mana_cost, character=character)
+
+
 ######################################  SIG ABILITIES  ######################################
 
 class Blaze(Signiture_Abilities):

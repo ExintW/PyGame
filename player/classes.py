@@ -13,7 +13,7 @@ class Archer(Character):
                          max_health=5,
                          mobility=2,
                          max_mana=10,
-                         symbol='A')
+                         symbol='A') # 🏹\uFE0E
         
         self.buff[Buff_Type.BOOST_BUFF].append(Buff('Passive: mobil+1', 1, Buff_Type.BOOST_BUFF, 1))
 
@@ -26,7 +26,7 @@ class Warrior(Character):
                          max_health=7,
                          mobility=2,
                          max_mana=10,
-                         symbol='W')
+                         symbol='W') # ⚔️\uFE0E
 
 class Mage(Character):
     def __init__(self, player=None, name=None, profession='MAGE', pos=None):
@@ -38,7 +38,7 @@ class Mage(Character):
                          max_health=4,
                          mobility=1,
                          max_mana=15,
-                         symbol='M')
+                         symbol='M') # 🧙‍♂️\uFE0E
         
 class Healer(Character):
     def __init__(self, player=None, name=None, profession='HEALER', pos=None):
@@ -54,10 +54,10 @@ class Healer(Character):
 class Knight(Character):
     def __init__(self, player=None, name=None, profession='Knight', pos=None):
         super().__init__(player=player, name=name, profession=profession, pos=pos,
-                         abilities=[Fortify(character=self)],
+                         abilities=[Fortify(character=self), Bash(character=self)],
                          range=1,
                          damage=1,
                          max_health=10,
                          mobility=1,
                          max_mana=10,
-                         symbol='K')
+                         symbol='K') # 🛡️\uFE0E

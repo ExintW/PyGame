@@ -47,9 +47,7 @@ init_map()
 
 print(f"{BLUE}-----------------Version 1.0-----------------{RESET}")
 
-
 while(1):
-    
     if Stats.CUR_MOVE == 'p1':
         # p1 round
         if not main_prompt(p1, p2):

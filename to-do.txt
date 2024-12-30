@@ -57,6 +57,14 @@ Need to detect duplicate buffs and add them together
     - calculate abnormality damage at end of each character's round
     - (?) currently abnormalities ignores def buffs
 
+Add CC abilities:
+    - can be abnormality type
+    - create a new enum for cc types: stun, root, etc.
+
+Can let cc be abnormalities:
+    - add a type attribute to abnormalities
+    - can be CC_TYPE or AB_TYPE
+
 ---------------------New Classes---------------------
 (Done) Mage class:
     - buff related abilities
@@ -123,3 +131,4 @@ Archer Class:
         - Apply "movement penalty" to nearby areas
             - when enemies in range performs any action (mov, atk, etc.)
             - automatically attack them even when not in archer's round.
+    - Signiture: Ashe Ult
