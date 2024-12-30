@@ -16,6 +16,7 @@ def get_player_info(num):
 
 def main_prompt(player, opponent):
     apply_map_effects() 
+    update_projectiles()
     for c in player.avail_characters:  
         check_characters()
         init_map()

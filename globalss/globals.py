@@ -37,6 +37,8 @@ class Stats:
     MAP = [[]]
     COLOR_COORD = {}   # Used for coloring in 2D Map
     MAP_EFFECT_LIST = []
-    EFFECT_MAP = [[[]]]
+    EFFECT_MAP = [[[]]] # Need to clean up self for each effect (Not Refreshing every round)
     CHAR_MAP = [[]]
+    PROJECTILE_LIST = []
+    PROJ_MAP = [[[]]]   
     DUMPS = []

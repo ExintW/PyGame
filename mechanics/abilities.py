@@ -4,6 +4,7 @@ from globalss.globals import *
 from globalss.colors import *
 from mechanics.abnormalities import *
 from mechanics.map_effects import *
+from mechanics.projectiles import *
 from game_stats.UI_utils import *
 
 ######################################  ATK ABILITIES  ######################################
@@ -131,6 +132,38 @@ class Blaze(Signiture_Abilities):
             print(f'{RED}Error in position!{RESET}')
             return False
 
+class Arrow(Signiture_Abilities):
+    def __init__(self, 
+                 character=None,
+                 name='Arrow',
+                 channeling=1,
+                 damage=2,
+                 duration=2,
+                 speed=1):
+        super().__init__(name=name, channeling=channeling, character=character)
+        self.damage = damage
+        self.stun_duration = duration
+        self.speed = speed
+
+    def use(self):
+        text = input(f'{GREEN}Enter the direction of the Arrow (e.g. 1 0 for ->): {RESET}').split()
+        #try:
+        if len(text) != 2:
+            print(f"{RED}Error in direction: Please only enter 2 numbers!{RESET}")
+            return False
+        direction = Position(int(text[0]), int(text[1]))
+        if direction.x > 1 or direction.x < -1 or direction.y > 1 or direction.y < -1:
+            print(f"{RED}Error in direction: Please only enter -1, 0, or 1!{RESET}")   
+            return False
+        position = Position(self.character.pos.x + direction.x, self.character.pos.y + direction.y)
+        arr = Arrow(pos=position, direction=direction, from_character=self.character, speed=self.speed, damage=self.damage, stun_duration=self.stun_duration)
+        Stats.PROJECTILE_LIST.append(arr)
+        return True
+        # except:
+        #     print(f"{RED}Error in direction!{RESET}")
+        #     return False
+        
+        
 ######################################  HEAL ABILITIES  ######################################
 
 class Heal(Heal_Abilities):

@@ -8,6 +8,7 @@ class Archer(Character):
     def __init__(self, player=None, name=None, profession='ARCHER', pos=None):
         super().__init__(player=player, name=name, profession=profession, pos=pos,
                          abilities=[Power_Shot(character=self), Precision(character=self)],
+                         sig_ability=Arrow(character=self),
                          range=2,
                          damage=2,
                          max_health=5,

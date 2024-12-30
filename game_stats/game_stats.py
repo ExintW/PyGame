@@ -1,6 +1,7 @@
 from player.character import *
 from globalss.globals import *
 from globalss.colors import *
+from mechanics.projectiles import *
 
 def check_end():
     """
@@ -20,6 +21,7 @@ def print_players_stats():
 def init_map():
     Stats.MAP = [["." for _ in range(Stats.MAP_SIZE.x)] for _ in range(Stats.MAP_SIZE.y)]
     Stats.CHAR_MAP = [[None for _ in range(Stats.MAP_SIZE.x)] for _ in range(Stats.MAP_SIZE.y)]
+    Stats.PROJ_MAP = [[[None for _ in range(0)] for _ in range(Stats.MAP_SIZE.x)] for _ in range(Stats.MAP_SIZE.y)]
     Stats.COLOR_COORD = {}
     for effect in Stats.MAP_EFFECT_LIST:
         Stats.MAP[effect.pos.y][effect.pos.x] = effect.symbol
@@ -28,6 +30,13 @@ def init_map():
         if effect.from_player is not None:
             Stats.COLOR_COORD[(effect.pos.x, effect.pos.y)] = effect.from_player.color
     
+    for proj in Stats.PROJECTILE_LIST:
+        Stats.MAP[proj.pos.y][proj.pos.x] = proj.symbol
+        if proj not in Stats.PROJ_MAP[proj.pos.y][proj.pos.x]:
+            Stats.PROJ_MAP[proj.pos.y][proj.pos.x].append(proj)
+        if proj.from_player is not None:
+            Stats.COLOR_COORD[(proj.pos.x, proj.pos.y)] = proj.from_player.color
+            
     for p in Stats.PLAYER_LIST:
         for c in p.avail_characters:
             Stats.MAP[c.pos.y][c.pos.x] = c.symbol
@@ -51,7 +60,12 @@ def apply_map_effects():
         if eff.duration <= 0:
             Stats.MAP_EFFECT_LIST.remove(eff)
             Stats.EFFECT_MAP[eff.pos.y][eff.pos.x].remove(eff)
-        
+
+def update_projectiles():
+    for proj in Stats.PROJECTILE_LIST.copy():
+        if proj.move():
+            Stats.PROJECTILE_LIST.remove(proj)
+            
 
 def check_characters():
     for p in Stats.PLAYER_LIST:
@@ -77,4 +91,4 @@ def init_lists_and_maps(p1, p2):
     p2.sym_to_char_map = p2_map
     
     Stats.EFFECT_MAP = [[[None for _ in range(0)] for _ in range(Stats.MAP_SIZE.x)] for _ in range(Stats.MAP_SIZE.y)]
-   
+    

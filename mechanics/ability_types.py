@@ -72,10 +72,11 @@ class Abnormality_Abilities:
                 for abnorm in target.abnormalities:
                     if abnorm.name == name:
                         abnorm.duration += ab.duration
-            else:
-                ab_copy = copy.deepcopy(ab)
-                target.abnormalities.append(ab_copy)
-                ab_copy.character = target
+                        continue   
+            ab_copy = copy.deepcopy(ab)
+            target.abnormalities.append(ab_copy)
+            ab_copy.character = target
+            
         self.character.mana -= self.mana_cost
         dump = f"{CYAN}Abnormality: "
         for ab in self.abnormalities:
