@@ -28,18 +28,21 @@ class Warrior(Character):
                          mobility=2,
                          max_mana=10,
                          symbol='W') # ⚔️\uFE0E
+        
+        self.buff[Buff_Type.ATK_BUFF].append(Buff('Passive: atk+1', 1, Buff_Type.ATK_BUFF, 1))
 
 class Mage(Character):
     def __init__(self, player=None, name=None, profession='MAGE', pos=None):
         super().__init__(player=player, name=name, profession=profession, pos=pos,
                          abilities=[Ignite(character=self)],
                          sig_ability=Blaze(character=self),
-                         range=3,
+                         range=2,
                          damage=1,
                          max_health=4,
                          mobility=1,
                          max_mana=15,
                          symbol='M') # 🧙‍♂️\uFE0E
+        self.buff[Buff_Type.RANGE_BUFF].append(Buff('Passive: range+1', 1, Buff_Type.RANGE_BUFF, 1))
         
 class Healer(Character):
     def __init__(self, player=None, name=None, profession='HEALER', pos=None):

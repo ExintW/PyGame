@@ -6,6 +6,7 @@ from mechanics.abnormalities import *
 from mechanics.map_effects import *
 from mechanics.projectiles import *
 from game_stats.UI_utils import *
+from player.character import *
 
 ######################################  ATK ABILITIES  ######################################
 
@@ -119,10 +120,11 @@ class Blaze(Signiture_Abilities):
                 print(f'{RED}Error: Position out of bound!{RESET}')
                 return False
                 
-            elif abs(pos.x - self.character.pos.x) + abs(pos.y - self.character.pos.y) > self.character.range:
+            elif max(abs(pos.x - self.character.pos.x), abs(pos.y - self.character.pos.y)) > self.character.range + buff_range(self.character):
                 print(f'{RED}Error: Position out of range!{RESET}')
                 return False
             else:
+                apply_range_buff(self.character)
                 for row in range(pos.y-1, pos.y+2):
                     for col in range(pos.x-1, pos.x+2):
                         if check_bounds(Position(col, row)):
@@ -137,10 +139,10 @@ class Ashe_Arrow(Signiture_Abilities):
                  character=None,
                  name='Ashe Arrow',
                  channeling=1,
-                 damage=0,
-                 duration=0,
+                 damage=0,      # initial dmg
+                 duration=0,    # initial stun duration
                  speed=1,
-                 dmg_growth=1,
+                 dmg_growth=1,  
                  stun_growth=0.5):
         super().__init__(name=name, channeling=channeling, character=character)
         self.damage = damage
@@ -150,7 +152,7 @@ class Ashe_Arrow(Signiture_Abilities):
         self.stun_growth = stun_growth
 
     def use(self):
-        text = input(f'{GREEN}Enter the direction of the Arrow (e.g. 1 0 for ->): {RESET}').split()
+        text = input(f'{GREEN}Enter the direction of the Arrow for {self.character.color}{self.character.name}{GREEN} (e.g. 1 0 for ->): {RESET}').split()
         try:
             if len(text) != 2:
                 print(f"{RED}Error in direction: Please only enter 2 numbers!{RESET}")

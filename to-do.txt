@@ -71,6 +71,10 @@ Need to detect duplicate buffs and add them together
     - move() -> parent class function
     - hit() -> can be child class
 
+(Done) Changed Attack Range calculation
+    - atk now does not take 2 ranges when attacking diagonaly
+    - mage sig ability also don't take 2 ranges when diagonal
+
 ---------------------New Classes---------------------
 (Done) Mage class:
     - buff related abilities
@@ -131,7 +135,7 @@ Warrior Class:
         - (?) Can do 2 moves in 1 round
         - reduce health or defence debuff
 
-Archer Class:
+(Done) Archer Class:
     - Signiture: Ashe Ult
         - Projectile
         - Damage and stun_duration scales with move distance

@@ -38,7 +38,7 @@ def prompt_move(c, target):
     """
     Prompt format:
         MOVE:
-            "mov <del_x> < <del_y>" (can be pos or neg)
+            "mov <del_x> <del_y>" (can be pos or neg)
         ATTACK:
             "atk <target character symbol>"
         ABILITIES:

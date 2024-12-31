@@ -1,6 +1,6 @@
 from globalss.globals import *
 from globalss.colors import *
-from game_stats.UI_utils import *
+from game_stats.UI_utils import check_bounds
 
 class Character:
     def __init__(self, player=None, name=None, profession=None, pos=None, abilities=None, sig_ability=None, range=0, damage=0, max_health=0, mobility=0, max_mana=0, symbol='/'):
@@ -57,7 +57,7 @@ class Character:
         if target == self:
             print(f'{CYAN}Cannot attack self!{RESET}')
             return False
-        elif abs(self.pos.x - target.pos.x) + abs(self.pos.y - target.pos.y) <= self.range + buff_range(self):
+        elif max(abs(self.pos.x - target.pos.x), abs(self.pos.y - target.pos.y)) <= self.range + buff_range(self):
             dmg = apply_dmg_buff(self, target, dmg_f)
             apply_range_buff(self)
             target.health -= dmg

@@ -1,6 +1,6 @@
 from globalss.colors import *
-from player.character import *
 from globalss.globals import *
+
 
 def divide_line():
     print(f'{CYAN}--------------------------------------------------------------------------------------------{RESET}')
@@ -39,13 +39,14 @@ def print_map_2D(map=None, color_coord=None):
         print()
 
 def print_range_map(character):
+    from player.character import buff_range
     range_map = [["." for _ in range(Stats.MAP_SIZE.x)] for _ in range(Stats.MAP_SIZE.y)]
     range_map[character.pos.y][character.pos.x] = character.symbol
     color_coord = {}
     color_coord[(character.pos.x, character.pos.y)] = character.color
     for row in range(Stats.MAP_SIZE.y):
         for col in range(Stats.MAP_SIZE.x):
-            if Position(col, row) != character.pos and abs(col - character.pos.x) + abs(row - character.pos.y) <= character.range:
+            if Position(col, row) != character.pos and max(abs(col - character.pos.x), abs(row - character.pos.y)) <= character.range + buff_range(character):
                 color_coord[(col, row)] = GREEN
                 range_map[row][col] = '-'
     
