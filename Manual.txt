@@ -1,0 +1,24 @@
+Manual：
+游戏类型： （version 1.0）回合制 2D 1v1 角色扮演
+角色数据： player 文件夹
+  character.py： 生成不同角色的母文件，其中在__init__可以查看或更改角色需要的最基本的信息， 可以在attack查看或者更改攻击其他角色逻辑，move查看或更改移动逻辑。
+  classes.py: 由character 衍生出的所有角色，每一位角色是一个单独的class，可以添加角色，或在对应角色的class中修改，删除角色或者角色数据。
+    ex. 创建 “战士” 
+        源文件： player\classes.py\class warrior
+        class Warrior(Character): //由Character 生成的 “战士” 角色
+          def __init__(self, player=None, name=None, profession='WARRIOR', pos=None): // 角色所属玩家，角色姓名， 角色职业， 角色生成位置
+            super().__init__(player=player, name=name, profession=profession, pos=pos, //上述信息由Character母文件__init__ method 直接生成，并且生成职业相应数值
+                         abilities=[Charge(character=self)],         
+                         range=1,                             //可在此更改职业射程，伤害，血量，机动性等数值
+                         damage=2,
+                         max_health=7,
+                         mobility=2,
+                         max_mana=10,
+                         symbol='W') # ⚔️\uFE0E
+        
+            self.buff[Buff_Type.ATK_BUFF].append(Buff('Passive: atk+1', 1, Buff_Type.ATK_BUFF, 1)) //角色buff机制， 可在此设置初始buff
+
+      以上代码代表角色的成功创建，在main文件夹中我们可以将此角色分配给对应玩家：
+          p2_Warrior = Warrior(player=p2, name='p2 Warrior', profession='WARRIOR', pos=Position(6, 4)) //玩家2将拥有一个 “战士”， 其生成在地图的 （6，4） 坐标
+    
+  player.py: 玩家创建文件， 可以在__init__设置玩家姓名，玩家代表颜色，玩家初始拥有的角色们，玩家所拥有角色的图标。
