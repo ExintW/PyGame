@@ -77,6 +77,16 @@ class Fortify(Buff_Abilities):
                  character=None):
         super().__init__(def_buff=def_buff, name = name, mana_cost= mana_cost, character= character)
 
+class Extend(Buff_Abilities):
+    def __init__(self,
+                 range_buff=[Buff(name='Extend: range+1', value=1, type=Buff_Type.RANGE_BUFF, duration=1)],
+                 name = 'Extend',
+                 mana_cost=4,
+                 character=None,
+                 range=0):
+        super().__init__(range_buff=range_buff, name=name, mana_cost=mana_cost, character=character, range=range)
+
+    
 ######################################  AB ABILITIES  ######################################
 
 class Ignite(Abnormality_Abilities):

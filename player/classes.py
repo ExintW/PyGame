@@ -47,8 +47,8 @@ class Mage(Character):
 class Healer(Character):
     def __init__(self, player=None, name=None, profession='HEALER', pos=None):
         super().__init__(player=player, name=name, profession=profession, pos=pos,
-                         abilities=[Heal(character=self)],
                          range=3,
+                         abilities=[Heal(character=self), Extend(character=self, range=3)],
                          damage=1,
                          max_health=4,
                          mobility=1,

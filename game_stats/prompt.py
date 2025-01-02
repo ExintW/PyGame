@@ -82,19 +82,20 @@ def prompt_move(c, target):
                     except:
                         print(f'{RED}Error in Attack!{RESET}')
                 case 'ABL':
-                    try:
+                    #try:
+                        abil_type = c.abilities[int(text[1])-1].ability_type
                         if int(text[1]) > len(c.abilities):
                             print(f'{RED}Invalid ability number!{RESET}')
-                        elif len(text) == 2 and (c.abilities[int(text[1])-1].ability_type == Ability_Type.BUFF_ABIL or c.abilities[int(text[1])-1].ability_type == Ability_Type.HEAL_ABIL): # For buff abilities: abl <#> -> means apply to self
+                        elif len(text) == 2 and (abil_type == Ability_Type.BUFF_ABIL or abil_type == Ability_Type.HEAL_ABIL): # For buff abilities: abl <#> -> means apply to self
                             end_round = c.abilities[int(text[1])-1].use(target=c)
-                        elif len(text) == 3 and ((c.abilities[int(text[1])-1].ability_type == Ability_Type.ATK_ABIL) or (c.abilities[int(text[1])-1].ability_type == Ability_Type.AB_ABIL)):  # For atk abilities: abl <#> <char>
+                        elif len(text) == 3 and ((abil_type == Ability_Type.ATK_ABIL) or (abil_type == Ability_Type.AB_ABIL)):  # For atk abilities: abl <#> <char>
                             end_round = c.abilities[int(text[1])-1].use(target=target.sym_to_char_map[text[2].upper()])
-                        elif len(text) == 3 and c.abilities[int(text[1])-1].ability_type == Ability_Type.HEAL_ABIL:
+                        elif len(text) == 3 and (abil_type == Ability_Type.HEAL_ABIL or abil_type == Ability_Type.BUFF_ABIL):
                             end_round = c.abilities[int(text[1])-1].use(target=c.player.sym_to_char_map[text[2].upper()])
                         else:
                             end_round = c.abilities[int(text[1])-1].use(target=Stats.NAME_TO_PLAYER_MAP[text[2].upper()].sym_to_char_map[text[3].upper()]) # "abil <abil #> <player> <char symbol>"
-                    except:
-                        print(f'{RED}Error in Ability!{RESET}')
+                    # except:
+                    #     print(f'{RED}Error in Ability!{RESET}')
                 case 'SIG':
                     try:
                         end_round = c.sig_ability.channel()
