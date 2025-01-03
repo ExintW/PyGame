@@ -53,14 +53,33 @@ class Power_Shot(Atk_Abilities):
 
 class Charge(Buff_Abilities): 
     def __init__(self,
-                 atk_buff=[Buff(name='Charge: atk+1', value=1, type=Buff_Type.ATK_BUFF, duration=1)],
+                 range_buff=[Buff(name='Charge: range+1', value=1, type=Buff_Type.RANGE_BUFF, duration=1)],
                  boost_buff=[Buff(name='Charge: mobil+1', value=1, type=Buff_Type.BOOST_BUFF, duration=1)],
                  name='Charge',
                  mana_cost=4,
+                 add_rage=1,
                  character=None):
         
-        super().__init__(atk_buff=atk_buff, boost_buff=boost_buff, name=name, mana_cost=mana_cost, character=character)
-
+        self.add_rage = add_rage
+        super().__init__(range_buff=range_buff, boost_buff=boost_buff, name=name, mana_cost=mana_cost, character=character)
+    
+    def use(self, target):
+        if self.character.mana < self.mana_cost:
+            print(f'{RED}Not enough mana!{RESET}')
+            return False
+        if pos_diff(self.character, target) > self.range:
+            print(f'{CYAN}Not enough range!{RESET}')
+            return False
+        for buff_type, list in self.buff.items():
+            if len(list) > 0:
+                target.buff[buff_type].extend(list)
+        self.character.mana -= self.mana_cost
+        if self.character.rage < self.character.max_rage:
+            self.character.rage += self.add_rage
+            Stats.DUMPS.append(f'{CYAN}{self.name}: rage + {self.add_rage}{RESET}')
+        Stats.DUMPS.append(f'{CYAN}Buff {self.name} applied to character: {target.name}!{RESET}')
+        return True
+    
 class Precision(Buff_Abilities):
     def __init__(self,
                  range_buff=[Buff(name='Precision: range+1', value=1, type=Buff_Type.RANGE_BUFF, duration=2)],
