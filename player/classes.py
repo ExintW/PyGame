@@ -27,9 +27,15 @@ class Warrior(Character):
                          max_health=7,
                          mobility=2,
                          max_mana=10,
+                         max_rage=7,
+                         max_rage_duration=3,
                          symbol='W') # ⚔️\uFE0E
-        
+        self.rage_def_buff_value = 1
+        self.rage_atk_buff_value = 1
+        self.rage_range_buff_value = 1
+        self.rage_boost_buff_value = 1
         self.buff[Buff_Type.ATK_BUFF].append(Buff('Passive: atk+1', 1, Buff_Type.ATK_BUFF, 1))
+        
 
 class Mage(Character):
     def __init__(self, player=None, name=None, profession='MAGE', pos=None):

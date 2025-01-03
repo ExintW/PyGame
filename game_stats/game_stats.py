@@ -2,6 +2,7 @@ from player.character import *
 from globalss.globals import *
 from globalss.colors import *
 from mechanics.projectiles import *
+from mechanics.buffs import *
 
 def check_end():
     """
@@ -75,6 +76,75 @@ def check_characters():
                 del p.sym_to_char_map[c.symbol]
                 Stats.DUMPS.append(f'{RED}{c.name} has been defeated!{RESET}')
 
+def check_init_rage():
+    Stats.CHAR_COPY_LIST_FOR_RAGE.clear()
+    for p in Stats.PLAYER_LIST:
+        for c in p.avail_characters:
+            if c.rage is None:
+                continue
+            
+            # append copy of init character stat into global list
+            Stats.CHAR_COPY_LIST_FOR_RAGE.append(copy.deepcopy(c))
+                
+            # check if rage def buff exists
+            buff_exist = False
+            for buff in c.buff[Buff_Type.DEF_BUFF].copy():
+                if buff.name == RAGE_DEF_BUFF_NAME:
+                    buff_exist = True
+                    if c.rage < int(c.max_rage/2):
+                        c.buff[Buff_Type.DEF_BUFF].remove(buff)
+                    
+            # if buff does not exist and rage > int(c.max_rage/2): add buff
+            rage_buff = Buff(name=RAGE_DEF_BUFF_NAME, value=c.rage_def_buff_value, type=Buff_Type.DEF_BUFF, duration=99)
+            if not buff_exist and c.rage >= int(c.max_rage/2):
+                c.buff[Buff_Type.DEF_BUFF].append(rage_buff)
+            
+            # remove max rage buffs if not in max rage
+            if c.in_max_rage == False:
+                for type, list in c.buff.items():
+                    for b in list.copy():
+                        if b.name == MAX_RAGE_BUFF_NAME:
+                            list.remove(b)
+            
+            if c.rage == c.max_rage:
+                if c.in_max_rage == False:
+                    c.in_max_rage = True
+                    c.max_rage_counter = c.max_rage_duration
+                    c.buff[Buff_Type.DEF_BUFF].append(Buff(MAX_RAGE_BUFF_NAME, c.rage_def_buff_value, type=Buff_Type.DEF_BUFF, duration=99))
+                    c.buff[Buff_Type.ATK_BUFF].append(Buff(MAX_RAGE_BUFF_NAME, c.rage_atk_buff_value, type=Buff_Type.ATK_BUFF, duration=99))
+                    c.buff[Buff_Type.RANGE_BUFF].append(Buff(MAX_RAGE_BUFF_NAME, c.rage_range_buff_value, type=Buff_Type.RANGE_BUFF, duration=99))
+                    c.buff[Buff_Type.BOOST_BUFF].append(Buff(MAX_RAGE_BUFF_NAME, c.rage_boost_buff_value, type=Buff_Type.BOOST_BUFF, duration=99))
+                else:
+                    if c.max_rage_counter == 1:
+                        c.in_max_rage = False
+                        c.max_rage_counter = 0
+                        c.rage = 0
+                        for type, list in c.buff.items():
+                            for b in list.copy():
+                                if b.name == MAX_RAGE_BUFF_NAME:
+                                    list.remove(b)
+                        for buff in c.buff[Buff_Type.DEF_BUFF].copy():
+                            if buff.name == RAGE_DEF_BUFF_NAME:
+                                if c.rage < int(c.max_rage/2):
+                                    c.buff[Buff_Type.DEF_BUFF].remove(buff)
+                        continue
+                    else:
+                        c.max_rage_counter -= 1
+                
+                
+def check_end_rage():   # decrements the rage if no attack or damage taken
+    for p in Stats.PLAYER_LIST:
+        for c in p.avail_characters:
+            if c.rage is None:
+                continue
+            c_init = None
+            for cc in Stats.CHAR_COPY_LIST_FOR_RAGE:
+                if cc.name == c.name:
+                    c_init = cc
+            if c_init.rage == c.rage and c.rage > 0 and not c.in_max_rage:       # rage has changed: no decrement needed
+                c.rage -= 1
+                Stats.DUMPS.append(f"{CYAN}{c.name}: rage - 1{RESET}")  
+                
 def init_lists_and_maps(p1, p2):
     Stats.PLAYER_LIST.append(p1)
     Stats.PLAYER_LIST.append(p2)

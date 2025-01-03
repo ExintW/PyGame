@@ -3,7 +3,7 @@ from globalss.colors import *
 from game_stats.UI_utils import check_bounds
 
 class Character:
-    def __init__(self, player=None, name=None, profession=None, pos=None, abilities=None, sig_ability=None, range=0, damage=0, max_health=0, mobility=0, max_mana=0, symbol='/'):
+    def __init__(self, player=None, name=None, profession=None, pos=None, abilities=None, sig_ability=None, range=0, damage=0, max_health=0, mobility=0, max_mana=0, symbol='/', max_rage=None, max_rage_duration=None):
         self.player = player
         self.name = name
         self.profession = profession
@@ -32,6 +32,18 @@ class Character:
         self.mobility = mobility
         self.mana = max_mana
         self.max_mana = max_mana   
+        self.max_rage = max_rage 
+        if max_rage is not None:
+            self.rage = 0
+            self.max_rage_duration = max_rage_duration
+            self.max_rage_counter = 0
+            self.in_max_rage = False
+        else:
+            self.rage = None
+            self.max_rage_duration = None
+            self.max_rage_counter = None
+            self.in_max_rage = None
+        
         self.symbol = symbol 
     
     def print_stat(self):
@@ -42,6 +54,10 @@ class Character:
             print()
         print(f'\t{GREEN}health: {self.health}{RESET}', f'{BG_GREEN} {RESET}'*self.health + f'{BG_DARK_GREEN} {RESET}'*(self.max_health - self.health))
         print(f'\t{BLUE}mana: {self.mana}{RESET}', f'{BG_BLUE} {RESET}'*self.mana + f'{BG_DARK_BLUE} {RESET}'*(self.max_mana - self.mana))
+        if self.rage is not None:
+            print(f'\t{RED}rage: {self.rage}{RESET}', f'{BG_RED} {RESET}'*self.rage + f'{BG_DARK_RED} {RESET}'*(self.max_rage - self.rage))
+        if self.in_max_rage is not None and self.in_max_rage:
+            print(f'\t{RED}max rage duration: {self.max_rage_counter}{RESET}')
         print('\trange:', self.range)
         print(f'\t{YELLOW}mobility: {self.mobility}{RESET}')
         print(f'\t{RED}damage: {self.damage}{RESET}')
@@ -60,7 +76,14 @@ class Character:
         elif max(abs(self.pos.x - target.pos.x), abs(self.pos.y - target.pos.y)) <= self.range + buff_range(self):
             dmg = apply_dmg_buff(self, target, dmg_f)
             apply_range_buff(self)
-            target.health -= dmg
+            if dmg >= 0:
+                target.health -= dmg
+            if self.rage is not None and self.rage != self.max_rage:
+                self.rage += 1
+                Stats.DUMPS.append(f'{CYAN}{self.name} rage + 1{RESET}')
+            if target.rage is not None and target.rage != target.max_rage:
+                target.rage += 1
+                Stats.DUMPS.append(f'{CYAN}{target.name} rage + 1{RESET}')
             Stats.DUMPS.append(f'{CYAN}Attack is successful: {target.name}: health - {dmg}{RESET}')
             return True
         else:

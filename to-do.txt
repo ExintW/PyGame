@@ -92,10 +92,12 @@ Samurai class:
     - high close combat dmg
     - moderate high defence/health
     - less mobility
-    - Ability: Power Slash
-        - horizontal only
+    - Signiture: Power Slash  
+        - New mechanic: Charging sig ability
+            - damage grows with rounds charged
+            - can choose when to cancel charge and use ability
         - high aoe line damage
-    - Signiture: Dash Slash
+    - Ability: Dash Slash
         - horizontal only
         - high aoe line damage 
         - move self to end point
@@ -128,7 +130,7 @@ Healer class:
 Warrior Class:
     - more movement related abilities/buffs
     - more self-apllied atack buff
-    - (?) rage related mechanics
+    - (Done) rage related mechanics
     - Signiture: Frenzy
         - buff: atk damage
         - buff: mobility

@@ -20,6 +20,7 @@ BG_CYAN = "\033[46m"
 BG_WHITE = "\033[47m"
 BG_DARK_GREEN = "\033[48;5;22m"
 BG_DARK_BLUE = "\033[48;5;18m"
+BG_DARK_RED = "\033[48;5;52m"
 BG_DEFAULT = "\033[49m"
 
 # Text Styles

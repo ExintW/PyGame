@@ -1,6 +1,9 @@
 from enum import Enum, auto
 from dataclasses import dataclass
 
+RAGE_DEF_BUFF_NAME = 'Rage DEF Buff'
+MAX_RAGE_BUFF_NAME = 'Max Rage Buff'
+
 class Buff_Type(Enum):
     ATK_BUFF = 'Attack Buff'
     ATK_DEBUFF = 'Attack DeBuff'
@@ -42,3 +45,4 @@ class Stats:
     PROJECTILE_LIST = []
     PROJ_MAP = [[[]]]   
     DUMPS = []
+    CHAR_COPY_LIST_FOR_RAGE = []
