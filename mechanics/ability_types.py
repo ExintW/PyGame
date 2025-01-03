@@ -63,7 +63,7 @@ class Abnormality_Abilities:
         if self.character.mana < self.mana_cost:
             print(f"{RED}Not enough mana!{RESET}")
             return False
-        if pos_diff(self.character, target) > self.character.range:
+        if pos_diff(self.character, target) > self.character.range + buff_range(self.character):
             print(f"{CYAN}Not enough range!{RESET}")
             return False
         for ab in self.abnormalities:
@@ -76,7 +76,8 @@ class Abnormality_Abilities:
             ab_copy = copy.deepcopy(ab)
             target.abnormalities.append(ab_copy)
             ab_copy.character = target
-            
+        
+        apply_range_buff(self.character)
         self.character.mana -= self.mana_cost
         dump = f"{CYAN}Abnormality: "
         for ab in self.abnormalities:

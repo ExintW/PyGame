@@ -71,3 +71,4 @@ class Knight(Character):
                          mobility=1,
                          max_mana=10,
                          symbol='K') # 🛡️\uFE0E
+        self.buff[Buff_Type.DEF_BUFF].append(Buff('Passive: def+1', 1, Buff_Type.DEF_BUFF, 99))

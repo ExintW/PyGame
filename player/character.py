@@ -84,6 +84,11 @@ class Character:
             if target.rage is not None and target.rage != target.max_rage:
                 target.rage += 1
                 Stats.DUMPS.append(f'{CYAN}{target.name} rage + 1{RESET}')
+            if self.in_max_rage is not None and self.in_max_rage:
+                self.health += int(dmg/2)
+                if self.health > self.max_health:
+                    self.health = self.max_health
+                Stats.DUMPS.append(f'{CYAN}{self.name} life steel: health + {int(dmg/2)}{RESET}')
             Stats.DUMPS.append(f'{CYAN}Attack is successful: {target.name}: health - {dmg}{RESET}')
             return True
         else:
@@ -218,4 +223,4 @@ def apply_range_buff(source):
             source.buff[Buff_Type.RANGE_DEBUFF].remove(buff)
 
 def pos_diff(source, target):
-    return abs(source.pos.x - target.pos.x) + abs(source.pos.y - target.pos.y)
+    return max(abs(source.pos.x - target.pos.x), abs(source.pos.y - target.pos.y))

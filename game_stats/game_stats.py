@@ -114,6 +114,10 @@ def check_init_rage():
                     c.buff[Buff_Type.ATK_BUFF].append(Buff(MAX_RAGE_BUFF_NAME, c.rage_atk_buff_value, type=Buff_Type.ATK_BUFF, duration=99))
                     c.buff[Buff_Type.RANGE_BUFF].append(Buff(MAX_RAGE_BUFF_NAME, c.rage_range_buff_value, type=Buff_Type.RANGE_BUFF, duration=99))
                     c.buff[Buff_Type.BOOST_BUFF].append(Buff(MAX_RAGE_BUFF_NAME, c.rage_boost_buff_value, type=Buff_Type.BOOST_BUFF, duration=99))
+                    c.health += int((c.max_health - c.health) / 2)
+                    Stats.DUMPS.append(f'{CYAN}MAX Rage: {c.name} health + {int((c.max_health - c.health) / 2)}{RESET}')
+                    if c.health > c.max_health:
+                        c.health = c.max_health
                 else:
                     if c.max_rage_counter == 1:
                         c.in_max_rage = False
