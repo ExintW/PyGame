@@ -43,7 +43,7 @@ class Character:
             self.max_rage_duration = None
             self.max_rage_counter = None
             self.in_max_rage = None
-        
+        self.mov_penalty = False
         self.symbol = symbol 
     
     def print_stat(self):
@@ -55,6 +55,8 @@ class Character:
                 print(f'{YELLOW}SHEATHED{RESET}', end=' ')
             else:
                 print(f'{YELLOW}SHEATHED (READY){RESET}')
+        if self.mov_penalty:
+            print(f'{YELLOW}MOV-PENALTY{RESET}', end=' ')
         print()
         print(f'\t{GREEN}health: {self.health}{RESET}', f'{BG_GREEN} {RESET}'*self.health + f'{BG_DARK_GREEN} {RESET}'*(self.max_health - self.health))
         print(f'\t{BLUE}mana: {self.mana}{RESET}', f'{BG_BLUE} {RESET}'*self.mana + f'{BG_DARK_BLUE} {RESET}'*(self.max_mana - self.mana))
@@ -101,13 +103,17 @@ class Character:
     
     def move(self, del_x, del_y, forced=False):
         cur_mobil = self.mobility
-        if not forced:
+        penalty = False
+        if self.mov_penalty:
+            cur_mobil = 1
+            penalty = True
+        if not forced and not penalty:
             cur_mobil += calculate_move(self)
         if (self.pos.x + del_x >= Stats.MAP_SIZE.x) or (self.pos.x + del_x < 0) or (self.pos.y + del_y >= Stats.MAP_SIZE.y) or (self.pos.y + del_y < 0):
             print(f'{RED}Invalid move distance: Out of bound!{RESET}')
             return False
         elif (abs(del_x) + abs(del_y) <= cur_mobil and abs(del_x) + abs(del_y) != 0) or forced:
-            if not forced:
+            if not forced and not penalty:
                 apply_boost_buff(self)
             previous_pos = Position(self.pos.x, self.pos.y)
             self.pos.x += del_x

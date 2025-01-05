@@ -47,6 +47,20 @@ def init_map():
                 for eff in Stats.EFFECT_MAP[c.pos.y][c.pos.x]:
                     if eff.duration > 0:
                         c.map_effects.add(eff)
+            check_mov_pen(c)
+
+def check_mov_pen(character):
+    for p in Stats.PLAYER_LIST:
+        if p == character.player:
+            continue
+        flag = False
+        for c in p.avail_characters:
+            if abs(character.pos.x - c.pos.x) + abs(character.pos.y - c.pos.y) == 1:
+                character.mov_penalty = True
+                flag = True
+        if not flag:
+            character.mov_penalty = False
+                
     
 def apply_map_effects():
     for p in Stats.PLAYER_LIST:
