@@ -54,17 +54,22 @@ class Character:
             if self.sheath_counter > 0:
                 print(f'{YELLOW}SHEATHED{RESET}', end=' ')
             else:
-                print(f'{YELLOW}SHEATHED (READY){RESET}')
+                print(f'{YELLOW}SHEATHED (READY){RESET}', end=' ')
         if self.mov_penalty:
             print(f'{YELLOW}MOV-PENALTY{RESET}', end=' ')
         print()
+        if hasattr(self, 'range_shot_count'):
+            print(f'{YELLOW}range shot count: {self.range_shot_count}{RESET}')
         print(f'\t{GREEN}health: {self.health}{RESET}', f'{BG_GREEN} {RESET}'*self.health + f'{BG_DARK_GREEN} {RESET}'*(self.max_health - self.health))
         print(f'\t{BLUE}mana: {self.mana}{RESET}', f'{BG_BLUE} {RESET}'*self.mana + f'{BG_DARK_BLUE} {RESET}'*(self.max_mana - self.mana))
         if self.rage is not None:
             print(f'\t{RED}rage: {self.rage}{RESET}', f'{BG_RED} {RESET}'*self.rage + f'{BG_DARK_RED} {RESET}'*(self.max_rage - self.rage))
         if self.in_max_rage is not None and self.in_max_rage:
             print(f'\t{RED}max rage duration: {self.max_rage_counter}{RESET}')
-        print('\trange:', self.range)
+        print('\trange:', self.range, end='')
+        if hasattr(self, 'range_shot') and self.range_shot:
+            print(f'{YELLOW} RANGE SHOT{RESET}', end='')
+        print()
         print(f'\t{YELLOW}mobility: {self.mobility}{RESET}')
         print(f'\t{RED}damage: {self.damage}{RESET}')
         print(f'\t{BLUE}abilities: {(lambda lst : [abil.name for abil in lst])(self.abilities)}{RESET}')
@@ -82,6 +87,12 @@ class Character:
         elif pos_diff(self, target) <= self.range + buff_range(self):
             dmg = apply_dmg_def_buff(self, target, dmg_f)
             apply_range_buff(self)
+            if hasattr(self, 'range_shot_count'):
+                if self.range_shot_count >= 3:
+                    self.range_shot = True
+                    self.range_shot_count = 0
+                else:
+                    self.range_shot_count += 1
             if dmg >= 0:
                 target.health -= dmg
             if self.rage is not None and self.rage != self.max_rage:
@@ -249,6 +260,8 @@ def apply_boost_buff(source):
             
 def buff_range(source):
     range = 0
+    if hasattr(source, 'range_shot') and source.range_shot:
+        range += 1
     for buff in source.buff[Buff_Type.RANGE_BUFF].copy():
         range += buff.value
     for buff in source.buff[Buff_Type.RANGE_DEBUFF].copy():
@@ -256,6 +269,9 @@ def buff_range(source):
     return range
 
 def apply_range_buff(source):
+    if hasattr(source, 'range_shot') and source.range_shot:
+        source.range_shot = False
+        source.range_shot_count = 0
     for buff in source.buff[Buff_Type.RANGE_BUFF].copy():
         buff.apply()
         if buff.duration < 1:

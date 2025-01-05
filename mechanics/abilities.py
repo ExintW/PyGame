@@ -26,7 +26,8 @@ class Power_Shot(Atk_Abilities):
             return False
         if self.character.mana < self.mana_cost:
             print(f'{RED}Not enough mana!{RESET}')
-            return False
+            return False 
+        before_health = target.health
         if not self.character.attack(target, dmg_f=self.damage):
             return False
         
@@ -44,8 +45,11 @@ class Power_Shot(Atk_Abilities):
             del_y = -self.push_back_dist
             
         if not target.move(del_x, del_y, forced=True):
+            target.health = before_health
             return False
         
+        self.character.range_shot = True
+        self.character.range_shot_count = 0
         self.character.mana -= self.mana_cost
         return True
 
