@@ -74,7 +74,7 @@ class Abnormality_Abilities:
                     if abnorm.name == name:
                         abnorm.duration += ab.duration
                         found = True
-                        continue
+                        break
             if not found:
                 ab_copy = copy.deepcopy(ab)
                 target.abnormalities.append(ab_copy)
