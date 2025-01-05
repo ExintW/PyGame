@@ -105,7 +105,7 @@ class Extend(Buff_Abilities):
                  range=0):
         super().__init__(range_buff=range_buff, name=name, mana_cost=mana_cost, character=character, range=range)
 
-    
+
 ######################################  AB ABILITIES  ######################################
 
 class Ignite(Abnormality_Abilities):
@@ -213,3 +213,35 @@ class Heal(Heal_Abilities):
                  ):
         super().__init__(name=name, mana_cost=mana_cost, heal_amount=heal_amount, character=character)
 
+######################################  SPECIAL ABILITIES  ######################################
+
+class Sheath:
+    def __init__(self,
+                 name = 'Sheath',
+                 mana_cost=5,
+                 character=None,
+                 sheath_count=2,
+                 range=0):
+        self.name = name
+        self.ability_type = Ability_Type.BUFF_ABIL
+        self.mana_cost = mana_cost
+        self.sheath_count = sheath_count
+        self.range = range
+        self.character = character
+        
+    def use(self, target):
+        if self.character.mana < self.mana_cost:
+            print(f'{RED}Not enough mana!{RESET}')
+            return False
+        if pos_diff(self.character, target) > self.range:
+            print(f'{CYAN}Can only apply to self!{RESET}')
+            return False
+        if not self.character.sheathed:
+            self.character.sheathed = True
+            self.character.mana -= self.mana_cost
+            self.character.sheath_counter = self.sheath_count
+            Stats.DUMPS.append(f'{CYAN}{self.name} is sheathed!{RESET}')
+            return True
+        else:
+            print(f'{CYAN}Already sheathed!{RESET}')
+            return False

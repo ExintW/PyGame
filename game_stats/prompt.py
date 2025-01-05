@@ -21,6 +21,7 @@ def main_prompt(player, opponent):
     for c in player.avail_characters:  
         check_characters()
         init_map()
+        check_special_mechanics(c)   # e.g. decrement sheath counter
         print_players_stats()
         divide_line()
         dump_info()

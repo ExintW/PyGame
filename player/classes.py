@@ -62,7 +62,7 @@ class Healer(Character):
                          symbol='H')
 
 class Knight(Character):
-    def __init__(self, player=None, name=None, profession='Knight', pos=None):
+    def __init__(self, player=None, name=None, profession='KNIGHT', pos=None):
         super().__init__(player=player, name=name, profession=profession, pos=pos,
                          abilities=[Fortify(character=self), Bash(character=self)],
                          range=1,
@@ -72,3 +72,59 @@ class Knight(Character):
                          max_mana=10,
                          symbol='K') # 🛡️\uFE0E
         self.buff[Buff_Type.DEF_BUFF].append(Buff('Passive: def+1', 1, Buff_Type.DEF_BUFF, 99))
+
+class Samurai(Character):
+    def __init__(self, player=None, name=None, profession='SAMURAI', pos=None):
+        super().__init__(player=player, name=name, profession=profession, pos=pos,
+                         abilities=[Sheath(character=self)],
+                         range=1,
+                         damage=2,
+                         max_health=7,
+                         mobility=1,
+                         max_mana=10,
+                         symbol='S')
+        self.sheathed = False   # 纳刀
+        self.sheath_counter = 0
+        self.buff[Buff_Type.BOOST_BUFF].append(Buff('Passive: mobil+1', 1, Buff_Type.BOOST_BUFF, 1))
+        
+    def attack(self, target, dmg_f=0):     
+        if self.sheathed and self.sheath_counter > 0:
+            print(f'{CYAN}Samurai cannot atk this round (Sheathed)!{RESET}')
+            return False
+        elif self.sheathed and self.sheath_counter == 0:
+            self.buff[Buff_Type.RANGE_BUFF].append(Buff(name='Sheath: range+1', value=1, type=Buff_Type.RANGE_BUFF, duration=1))
+            self.buff[Buff_Type.ATK_BUFF].append(Buff(name='Sheath: dmg+1', value=1, type=Buff_Type.ATK_BUFF, duration=1))
+            self.sheathed = False
+        
+        atk_range = self.range + buff_range(self)
+        
+        if target == self:
+            print(f'{CYAN}Cannot attack self!{RESET}')
+            return False
+        elif pos_diff(self, target) <= atk_range:
+            dmg = self.apply_dmg_buff(dmg_f)
+            apply_range_buff(self)
+            
+            for c in target.player.avail_characters:
+                if c == target:
+                    act_dmg = self.apply_def_buff(target=c, dmg=dmg)
+                    if act_dmg > 0:
+                        c.health -= act_dmg
+                        Stats.DUMPS.append(f'{CYAN}Attack is successful: {c.name}: health - {act_dmg}{RESET}')
+                elif pos_diff(self, c) <= atk_range:
+                    half_dmg = self.apply_def_buff(target=c, dmg=int(dmg/2))
+                    if half_dmg > 0:
+                        c.health -= half_dmg
+                        Stats.DUMPS.append(f'{CYAN}Attack is successful: {c.name}: health - {half_dmg}{RESET}')
+                else:
+                    continue
+                
+                if c.rage is not None and c.rage < c.max_rage:
+                    c.rage += 1
+                    Stats.DUMPS.append(f'{CYAN}{c.name} rage + 1{RESET}')  
+            
+            return True
+        else:
+            print(f'{CYAN}Not enough range!{RESET}')
+            return False
+    

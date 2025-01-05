@@ -76,6 +76,13 @@ def check_characters():
                 del p.sym_to_char_map[c.symbol]
                 Stats.DUMPS.append(f'{RED}{c.name} has been defeated!{RESET}')
 
+def check_special_mechanics(character):
+    # check sheath
+    if hasattr(character, 'sheathed'):
+        print('Has attribute')
+        if character.sheath_counter > 0:
+            character.sheath_counter -= 1
+
 def check_init_rage():
     Stats.CHAR_COPY_LIST_FOR_RAGE.clear()
     for p in Stats.PLAYER_LIST:

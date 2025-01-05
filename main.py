@@ -26,15 +26,15 @@ p2 = Player(name='P2', color=RED)
 # p2_Healer = Healer(player=p2, name='p2 Healer', profession='HEALER', pos=Position(7, 4))
 # p2_Knight = Knight(player=p2, name='p2 Knight', profession='KNIGHT', pos=Position(6, 3))
 
-p1_Archer = Archer(player=p1, name='p1 Archer', profession='ARCHER', pos=Position(3, 2))
-p1_Knight = Knight(player=p1, name='p1 Knight', profession='KNIGHT', pos=Position(4, 4))
-p1_Mage = Mage(player=p1, name='p1 Mage', profession='MAGE', pos=Position(3, 6))
+p1_Archer = Archer(player=p1, name='p1 Archer', pos=Position(3, 2))
+p1_Knight = Knight(player=p1, name='p1 Knight', pos=Position(4, 4))
+p1_Mage = Mage(player=p1, name='p1 Mage', pos=Position(3, 6))
 p1.characters = [p1_Archer, p1_Knight, p1_Mage]
 
-p2_Archer = Archer(player=p2, name='p2 Archer', profession='ARCHER', pos=Position(7, 5))
-p2_Warrior = Warrior(player=p2, name='p2 Warrior', profession='WARRIOR', pos=Position(6, 4))
-p2_Healer = Healer(player=p2, name='p2 Healer', profession='HEALER', pos=Position(7, 3))
-p2.characters = [p2_Archer, p2_Warrior, p2_Healer]
+p2_Samurai = Samurai(player=p2, name='p2 Samurai', pos=Position(6, 3))
+p2_Warrior = Warrior(player=p2, name='p2 Warrior', pos=Position(6, 5))
+p2_Healer = Healer(player=p2, name='p2 Healer', pos=Position(7, 4))
+p2.characters = [p2_Samurai, p2_Warrior, p2_Healer]
 
 #p1.characters = [p1_Archer, p1_Warrior, p1_Knight, p1_Mage, p1_Healer]
 #p1.characters = [p1_Archer, p1_Mage]
