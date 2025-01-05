@@ -47,7 +47,7 @@ class Mage(Character):
                          damage=1,
                          max_health=4,
                          mobility=1,
-                         max_mana=10,
+                         max_mana=15,
                          symbol='M') # 🧙‍♂️\uFE0E
         self.buff[Buff_Type.RANGE_BUFF].append(Buff('Passive: range+1', 1, Buff_Type.RANGE_BUFF, 1))
         
@@ -89,9 +89,6 @@ class Samurai(Character):
         self.buff[Buff_Type.BOOST_BUFF].append(Buff('Passive: mobil+1', 1, Buff_Type.BOOST_BUFF, 1))
         
     def attack(self, target, dmg_f=0):     
-        before_range_buff = self.buff[Buff_Type.RANGE_BUFF].copy()
-        before_atk_buff = self.buff[Buff_Type.ATK_BUFF].copy()
-        before_sheathed = self.sheathed
         if self.sheathed and self.sheath_counter > 0:
             print(f'{CYAN}Samurai cannot atk this round (Sheathed)!{RESET}')
             return False
@@ -104,9 +101,6 @@ class Samurai(Character):
         
         if target == self:
             print(f'{CYAN}Cannot attack self!{RESET}')
-            self.buff[Buff_Type.RANGE_BUFF] = before_range_buff
-            self.buff[Buff_Type.ATK_BUFF] = before_atk_buff
-            self.sheathed = before_sheathed
             return False
         elif pos_diff(self, target) <= atk_range:
             dmg = self.apply_dmg_buff(dmg_f)
@@ -133,8 +127,5 @@ class Samurai(Character):
             return True
         else:
             print(f'{CYAN}Not enough range!{RESET}')
-            self.buff[Buff_Type.RANGE_BUFF] = before_range_buff
-            self.buff[Buff_Type.ATK_BUFF] = before_atk_buff
-            self.sheathed = before_sheathed
             return False
     

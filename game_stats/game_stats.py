@@ -93,7 +93,6 @@ def check_characters():
 def check_special_mechanics(character):
     # check sheath
     if hasattr(character, 'sheathed'):
-        print('Has attribute')
         if character.sheath_counter > 0:
             character.sheath_counter -= 1
 
