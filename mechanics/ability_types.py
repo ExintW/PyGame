@@ -69,13 +69,16 @@ class Abnormality_Abilities:
         for ab in self.abnormalities:
             if len(target.abnormalities) > 0:
                 name = ab.name
+                found = False
                 for abnorm in target.abnormalities:
                     if abnorm.name == name:
                         abnorm.duration += ab.duration
-                        continue   
-            ab_copy = copy.deepcopy(ab)
-            target.abnormalities.append(ab_copy)
-            ab_copy.character = target
+                        found = True
+                        continue
+            if not found:
+                ab_copy = copy.deepcopy(ab)
+                target.abnormalities.append(ab_copy)
+                ab_copy.character = target
         
         apply_range_buff(self.character)
         self.character.mana -= self.mana_cost

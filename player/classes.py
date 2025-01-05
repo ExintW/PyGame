@@ -47,7 +47,7 @@ class Mage(Character):
                          damage=1,
                          max_health=4,
                          mobility=1,
-                         max_mana=15,
+                         max_mana=10,
                          symbol='M') # 🧙‍♂️\uFE0E
         self.buff[Buff_Type.RANGE_BUFF].append(Buff('Passive: range+1', 1, Buff_Type.RANGE_BUFF, 1))
         
