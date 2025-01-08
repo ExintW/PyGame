@@ -13,7 +13,7 @@ class Character:
         self.sig_ability = sig_ability
         self.abnormalities = []
         self.map_effects = set()
-        self.channeling = -1
+        self.channel_counter = -1       # -1 means not channeling
         self.buff = {
             Buff_Type.ATK_BUFF : [],    # affects atk dmg
             Buff_Type.ATK_DEBUFF : [],
@@ -48,8 +48,10 @@ class Character:
     
     def print_stat(self):
         print(f'{PURPLE}Character: {self.profession}{RESET} ', end='')
-        if self.channeling > 0:
-            print(f'{YELLOW}CHANNELING ({self.channeling} Rounds left)', end = ' ')
+        if self.channel_counter > 0:
+            print(f'{YELLOW}CHANNELING ({self.channel_counter} Rounds left)', end = ' ')
+        if self.sig_ability is not None and self.sig_ability.using:
+            print(f'{YELLOW}CASTING ({self.sig_ability.rounds_used} Rounds)', end = ' ')
         if hasattr(self, 'sheathed') and self.sheathed:
             if self.sheath_counter > 0:
                 print(f'{YELLOW}SHEATHED{RESET}', end=' ')
@@ -181,40 +183,40 @@ class Character:
                 if not ab.apply():  # decrement ab, returns false if duration becomes 0
                     self.abnormalities.remove(ab)
         return flag
+
+def apply_dmg_buff(source, dmg=0):
+    if dmg == 0:
+        damage = source.damage
+    else:
+        damage = dmg
     
-    def apply_def_buff(self, target, dmg=0):    # for samurai aoe atk
-        if dmg == 0:
-            damage = self.damage
-        else:
-            damage = dmg
-        
-        for buff in target.buff[Buff_Type.DEF_BUFF].copy():
-            damage -= buff.apply()
-            if buff.duration < 1:
-                target.buff[Buff_Type.DEF_BUFF].remove(buff)
-        for buff in target.buff[Buff_Type.DEF_DEBUFF].copy():
-            damage += buff.apply()
-            if buff.duration < 1:
-                target.buff[Buff_Type.DEF_DEBUFF].remove(buff)
-        
-        return damage
+    for buff in source.buff[Buff_Type.ATK_BUFF].copy():
+        damage += buff.apply()
+        if buff.duration < 1:
+            source.buff[Buff_Type.ATK_BUFF].remove(buff)
+    for buff in source.buff[Buff_Type.ATK_DEBUFF].copy():
+        damage -= buff.apply()
+        if buff.duration < 1:
+            source.buff[Buff_Type.ATK_DEBUFF].remove(buff)
+    return damage
+
+def apply_def_buff(source, target, dmg=0):    # for samurai aoe atk
+    if dmg == 0:
+        damage = source.damage
+    else:
+        damage = dmg
     
-    def apply_dmg_buff(self, dmg=0):
-        if dmg == 0:
-            damage = self.damage
-        else:
-            damage = dmg
-        
-        for buff in self.buff[Buff_Type.ATK_BUFF].copy():
-            damage += buff.apply()
-            if buff.duration < 1:
-                self.buff[Buff_Type.ATK_BUFF].remove(buff)
-        for buff in self.buff[Buff_Type.ATK_DEBUFF].copy():
-            damage -= buff.apply()
-            if buff.duration < 1:
-                self.buff[Buff_Type.ATK_DEBUFF].remove(buff)
-        return damage
+    for buff in target.buff[Buff_Type.DEF_BUFF].copy():
+        damage -= buff.apply()
+        if buff.duration < 1:
+            target.buff[Buff_Type.DEF_BUFF].remove(buff)
+    for buff in target.buff[Buff_Type.DEF_DEBUFF].copy():
+        damage += buff.apply()
+        if buff.duration < 1:
+            target.buff[Buff_Type.DEF_DEBUFF].remove(buff)
     
+    return damage
+
 def apply_dmg_def_buff(source, target, dmg=0):
     if dmg == 0:
         damage = source.damage

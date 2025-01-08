@@ -90,26 +90,58 @@ class Abnormality_Abilities:
         return True
 
 class Signiture_Abilities:
-    def __init__(self, name='Sig Abil', channeling=0, character=None):
+    def __init__(self, name='Sig Abil', channel_round=0, character=None, sig_type=None):
         self.name = name
-        self.channeling = channeling
+        self.channel_round = channel_round
         self.character = character
+        self.sig_type = sig_type
+        
+        # For continuous sig
+        self.rounds_used = 0
+        self.using = False
         
         self.ability_type = Ability_Type.SIG_ABIL
     
     def channel(self):
-        if self.character.channeling > 0:
-            self.character.channeling -= 1
+        if self.character.channel_counter > 0:
+            self.character.channel_counter -= 1
             
-        elif self.character.channeling == -1:
-            self.character.channeling = self.channeling
+        elif self.character.channel_counter == -1:
+            self.character.channel_counter = self.channel_round
                   
-        if self.character.channeling == 0:    # READY to use
-            while not self.use():
-                pass
-            self.character.channeling = -1
+        if self.character.channel_counter == 0:    # READY to use
+            if self.sig_type == Sig_Type.SINGLE_USE:
+                while not self.use():
+                    pass
+                self.character.channel_counter = -1
+            elif self.sig_type == Sig_Type.CONTINUOUS:
+                while not self.start():
+                    pass
+            
         return True
-
+    
+    def start(self):
+        if self.using == False:     # First use after finishing channeling
+            self.using = True
+            return True
+        
+        # not first use
+        text = input(f'{GREEN}Enter the action for {RESET}{self.character.color}{self.character.name}{RESET}{GREEN} (STOP, END): {RESET}').split()
+        
+        match text[0].upper():
+            case 'END':
+                print(f'{CYAN}Round Ended{RESET}')
+                self.rounds_used += 1
+                return True
+            case 'STOP':
+                while not self.use():
+                    pass
+                self.character.channel_counter = -1
+                self.using = False
+                self.rounds_used = 0
+                self.character.channel_counter = -1
+                return True
+                
 class Heal_Abilities:
     def __init__(self, name=None, mana_cost=0, heal_amount=0, character=None):
         self.name = name

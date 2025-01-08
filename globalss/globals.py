@@ -14,6 +14,10 @@ class Buff_Type(Enum):
     RANGE_BUFF = 'Range Buff'
     RANGE_DEBUFF = 'Range DeBuff'
 
+class Sig_Type(Enum):
+    SINGLE_USE = 'Single Use'
+    CONTINUOUS = 'Continuous'
+
 class Ability_Type(Enum):
     ATK_ABIL = 'Attack Ability'
     BUFF_ABIL = 'Buff Ability'

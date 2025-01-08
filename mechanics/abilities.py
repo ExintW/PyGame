@@ -135,10 +135,10 @@ class Blaze(Signiture_Abilities):
     def __init__(self,
                  character=None,
                  name='Blaze',
-                 channeling=1,
+                 channel_round=1,
                  damage=1,
                  duration=3):
-        super().__init__(name=name, channeling=channeling, character=character)
+        super().__init__(name=name, channel_round=channel_round, character=character, sig_type=Sig_Type.SINGLE_USE)
         
         self.damage = damage
         self.duration = duration
@@ -171,13 +171,13 @@ class Ashe_Arrow(Signiture_Abilities):
     def __init__(self, 
                  character=None,
                  name='Ashe Arrow',
-                 channeling=1,
+                 channel_round=1,
                  damage=0,      # initial dmg
                  duration=0,    # initial stun duration
                  speed=1,
                  dmg_growth=1,  
                  stun_growth=0.5):
-        super().__init__(name=name, channeling=channeling, character=character)
+        super().__init__(name=name, channel_round=channel_round, character=character, sig_type=Sig_Type.SINGLE_USE)
         self.damage = damage
         self.stun_duration = duration
         self.speed = speed
@@ -204,8 +204,73 @@ class Ashe_Arrow(Signiture_Abilities):
         except:
             print(f"{RED}Error in direction!{RESET}")
             return False
+
+class Void_Slash(Signiture_Abilities):
+    def __init__(self,
+                 character=None,
+                 name='Void Slash',
+                 channel_round=0,
+                 damage_growth=1,
+                 range_growth=1,
+                 max_charge=3,
+                 burn_duration=2,
+                 burn_dmg=1):
+        super().__init__(name=name, channel_round=channel_round, character=character, sig_type=Sig_Type.CONTINUOUS)
+        self.damage_growth = damage_growth
+        self.range_growth = range_growth
+        self.max_charge = max_charge
+        self.burn_duration = burn_duration
+        self.burn_dmg = burn_dmg
         
+    def use(self):
+        if self.rounds_used == 0:
+            return True
         
+        charge = self.rounds_used
+        if self.rounds_used > self.max_charge:
+            charge = self.max_charge
+            
+        damage = self.damage_growth * charge
+        atk_range = self.range_growth * charge
+        
+        print(f'{GREEN}Current Charge: {charge}{RESET}')
+        print(f'{GREEN}\tdmg = {damage}{RESET}')
+        print(f'{GREEN}\trange = {atk_range}')
+        text = input(f'{GREEN}Enter the direction of the Void Slash for {self.character.color}{self.character.name}{GREEN} (e.g. 1 0 for ->): {RESET}').split()
+        try:
+            if len(text) != 2:
+                print(f"{RED}Error in direction: Please only enter 2 numbers!{RESET}")
+                return False
+            direction = Position(int(text[0]), int(text[1]))
+            if direction.x > 1 or direction.x < -1 or direction.y > 1 or direction.y < -1:
+                print(f"{RED}Error in direction: Please only enter -1, 0, or 1!{RESET}")   
+                return False
+            position = Position(self.character.pos.x, self.character.pos.y)
+            for i in range(atk_range):
+                position.x += direction.x
+                position.y += direction.y  
+                if check_bounds(position):
+                    self.check_hit(position, damage)
+                    Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=self.burn_duration, pos=copy.deepcopy(position), damage=self.burn_dmg, from_player=self.character.player))
+            
+            return True
+        except:
+            print(f"{RED}Error in direction!{RESET}")
+            return False
+          
+    def check_hit(self, position, damage):
+        target_player = Stats.PLAYER_LIST[0]
+        if target_player == self.character.player:
+            target_player = Stats.PLAYER_LIST[1]
+        for target in target_player.avail_characters:
+            if target.pos == position:
+                dmg = apply_def_buff(source=self.character, target=target, dmg=damage)
+                if dmg >= 0:
+                    target.health -= dmg
+                if target.rage is not None and target.rage != target.max_rage:
+                    target.rage += 1
+                    Stats.DUMPS.append(f'{CYAN}{target.name} rage + 1{RESET}')
+                Stats.DUMPS.append(f'{CYAN}Attack is successful: {target.name}: health - {dmg}{RESET}')
 ######################################  HEAL ABILITIES  ######################################
 
 class Heal(Heal_Abilities):

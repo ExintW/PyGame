@@ -1,7 +1,7 @@
 from globalss.colors import RESET
 from globalss.globals import *
 from mechanics.buffs import Buff
-from player.character import Character
+from player.character import *
 from mechanics.abilities import *
 
 class Archer(Character):
@@ -78,6 +78,7 @@ class Samurai(Character):
     def __init__(self, player=None, name=None, profession='SAMURAI', pos=None):
         super().__init__(player=player, name=name, profession=profession, pos=pos,
                          abilities=[Sheath(character=self)],
+                         sig_ability=Void_Slash(character=self),
                          range=1,
                          damage=2,
                          max_health=7,
@@ -109,17 +110,17 @@ class Samurai(Character):
             self.sheathed = before_sheathed
             return False
         elif pos_diff(self, target) <= atk_range:
-            dmg = self.apply_dmg_buff(dmg_f)
+            dmg = apply_dmg_buff(self, dmg_f)
             apply_range_buff(self)
             
             for c in target.player.avail_characters:
                 if c == target:
-                    act_dmg = self.apply_def_buff(target=c, dmg=dmg)
+                    act_dmg = apply_def_buff(source=self, target=c, dmg=dmg)
                     if act_dmg > 0:
                         c.health -= act_dmg
                         Stats.DUMPS.append(f'{CYAN}Attack is successful: {c.name}: health - {act_dmg}{RESET}')
                 elif pos_diff(self, c) <= atk_range:
-                    half_dmg = self.apply_def_buff(target=c, dmg=int(dmg/2))
+                    half_dmg = apply_def_buff(source=self, target=c, dmg=int(dmg/2))
                     if half_dmg > 0:
                         c.health -= half_dmg
                         Stats.DUMPS.append(f'{CYAN}Attack is successful: {c.name}: health - {half_dmg}{RESET}')
