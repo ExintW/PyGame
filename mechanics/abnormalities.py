@@ -21,7 +21,9 @@ class Burn(Abnormality):
         self.character.health -= self.damage
         self.duration -= 1
         Stats.DUMPS.append(f"{RED}Applied {self.name} to {self.character.name}: -{self.damage} health!{RESET}")
-        
+        if self.character.rage is not None and self.character.rage != self.character.max_rage:
+                self.character.rage += 1
+                Stats.DUMPS.append(f'{CYAN}{self.character.name} rage + 1{RESET}')
         if self.duration == 0 or self.character.health <= 0:
             return False
         return True

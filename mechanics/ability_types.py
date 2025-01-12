@@ -67,9 +67,9 @@ class Abnormality_Abilities:
             print(f"{CYAN}Not enough range!{RESET}")
             return False
         for ab in self.abnormalities:
+            found = False
             if len(target.abnormalities) > 0:
                 name = ab.name
-                found = False
                 for abnorm in target.abnormalities:
                     if abnorm.name == name:
                         abnorm.duration += ab.duration

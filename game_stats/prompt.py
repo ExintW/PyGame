@@ -58,7 +58,10 @@ def prompt_move(c, target):
         
         if c.apply_abnormalities(AB_Type.STUN):
             end_round = True
-            c.channel_counter = -1   # interrupt channeling
+            if c.sig_ability != None:
+                c.channel_counter = -1   # interrupt channeling
+                c.sig_ability.rounds_used = 0
+                c.sig_ability.using = False
             Stats.DUMPS.append(f'{RED}{c.name} is stunned!{RESET}')
               
         elif c.sig_ability != None and c.channel_counter != -1:

@@ -248,7 +248,7 @@ class Void_Slash(Signiture_Abilities):
             position = Position(self.character.pos.x, self.character.pos.y)
             for i in range(atk_range):
                 position.x += direction.x
-                position.y += direction.y  
+                position.y -= direction.y  
                 if check_bounds(position):
                     self.check_hit(position, damage)
                     Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=self.burn_duration, pos=copy.deepcopy(position), damage=self.burn_dmg, from_player=self.character.player))
