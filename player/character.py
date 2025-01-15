@@ -1,6 +1,7 @@
 from globalss.globals import *
 from globalss.colors import *
 from game_stats.UI_utils import check_bounds
+from mechanics.abilities import *
 
 class Character:
     def __init__(self, player=None, name=None, profession=None, pos=None, abilities=None, sig_ability=None, range=0, damage=0, max_health=0, mobility=0, max_mana=0, symbol='/', max_rage=None, max_rage_duration=None):
@@ -74,7 +75,7 @@ class Character:
         print()
         print(f'\t{YELLOW}mobility: {self.mobility}{RESET}')
         print(f'\t{RED}damage: {self.damage}{RESET}')
-        print(f'\t{BLUE}abilities: {(lambda lst : [abil.name for abil in lst])(self.abilities)}{RESET}')
+        print(f'\t{BLUE}abilities: {(lambda lst : [(abil.name, "Ready" if abil.cd_count == 0  else abil.cd_count) for abil in lst])(self.abilities)}{RESET}')
         if self.sig_ability is not None:
             print(f'\t{YELLOW}signiture ability: {self.sig_ability.name}{RESET}')
         self.print_buffs()

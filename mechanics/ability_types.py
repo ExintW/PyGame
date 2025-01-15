@@ -6,7 +6,7 @@ from player.character import *
 import copy
 
 class Atk_Abilities:   
-    def __init__(self, name='Attack Ability', damage=0, mana_cost=0, range=0, mobility_cost=0, character=None):
+    def __init__(self, name='Attack Ability', damage=0, mana_cost=0, range=0, mobility_cost=0, character=None, cd=None):
         self.name = name
         self.ability_type = Ability_Type.ATK_ABIL
         self.damage = damage
@@ -14,9 +14,11 @@ class Atk_Abilities:
         self.range = range
         self.mobility_cost = mobility_cost
         self.character = character
+        self.cd = cd
+        self.cd_count = 0
 
 class Buff_Abilities:
-    def __init__(self, atk_buff=[], atk_debuff=[], def_buff=[], def_debuff=[], boost_buff=[], boost_debuff=[], range_buff=[], range_debuff=[], name='Buff Ability', mana_cost=0, range=0, mobility_cost=0, character=None):
+    def __init__(self, atk_buff=[], atk_debuff=[], def_buff=[], def_debuff=[], boost_buff=[], boost_debuff=[], range_buff=[], range_debuff=[], name='Buff Ability', mana_cost=0, range=0, mobility_cost=0, character=None, cd=None):
         self.buff = {
             Buff_Type.ATK_BUFF : atk_buff,    # affects atk dmg
             Buff_Type.ATK_DEBUFF : atk_debuff,
@@ -33,6 +35,8 @@ class Buff_Abilities:
         self.range = range
         self.mobility_cost = mobility_cost
         self.character = character
+        self.cd = cd
+        self.cd_count = 0
     
     def use(self, target):
         if self.character.mana < self.mana_cost:
@@ -49,12 +53,14 @@ class Buff_Abilities:
         return True
 
 class Abnormality_Abilities:
-    def __init__(self, name=None, abnormalities=None, mana_cost=0, character=None):
+    def __init__(self, name=None, abnormalities=None, mana_cost=0, character=None, cd=None):
         self.name = name
         self.ability_type = Ability_Type.AB_ABIL
         self.abnormalities = abnormalities
         self.mana_cost = mana_cost
         self.character = character
+        self.cd = cd
+        self.cd_count = 0
     
     def use(self, target):
         if target.player == self.character.player:
@@ -90,7 +96,7 @@ class Abnormality_Abilities:
         return True
 
 class Signiture_Abilities:
-    def __init__(self, name='Sig Abil', channel_round=0, character=None, sig_type=None):
+    def __init__(self, name='Sig Abil', channel_round=0, character=None, sig_type=None, cd=None):
         self.name = name
         self.channel_round = channel_round
         self.character = character
@@ -101,6 +107,8 @@ class Signiture_Abilities:
         self.using = False
         
         self.ability_type = Ability_Type.SIG_ABIL
+        self.cd = cd
+        self.cd_count = 0
     
     def channel(self):
         if self.character.channel_counter > 0:
@@ -143,13 +151,15 @@ class Signiture_Abilities:
                 return True
                 
 class Heal_Abilities:
-    def __init__(self, name=None, mana_cost=0, heal_amount=0, character=None):
+    def __init__(self, name=None, mana_cost=0, heal_amount=0, character=None, cd=None):
         self.name = name
         self.mana_cost = mana_cost
         self.heal_amount = heal_amount
         self.character = character
         
         self.ability_type = Ability_Type.HEAL_ABIL
+        self.cd = cd
+        self.cd_count = 0
     
     def use(self, target):
         if target.health == target.max_health:

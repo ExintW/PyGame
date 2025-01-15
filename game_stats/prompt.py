@@ -3,6 +3,7 @@ from player.classes import *
 from globalss.globals import *
 from game_stats.UI_utils import *
 from game_stats.game_stats import *
+from mechanics.abilities import *
 
 def get_player_info(num):
     while (1):
@@ -14,11 +15,17 @@ def get_player_info(num):
         else:
             print(f'{RED}Wrong player info!{RESET}')
 
+def decrement_cd(character):
+    for ability in character.abilities:
+        if ability.cd_count != 0:
+            ability.cd_count -= 1
+
 def main_prompt(player, opponent):
     apply_map_effects() 
     update_projectiles()
     check_init_rage()
-    for c in player.avail_characters:  
+    for c in player.avail_characters:
+        decrement_cd(c)
         check_characters()
         init_map()
         check_special_mechanics(c)   # e.g. decrement sheath counter

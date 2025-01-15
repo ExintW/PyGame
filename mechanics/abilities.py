@@ -14,13 +14,17 @@ class Power_Shot(Atk_Abilities):
     def __init__(self,
                  name='Power Shot', 
                  damage=2, 
-                 mana_cost=6,
+                 mana_cost=5,
                  character=None):
         super().__init__(name=name, damage=damage, mana_cost=mana_cost, character=character)
         
         self.push_back_dist = 1
-    
+        self.cd = 3
+
     def use(self, target):
+        if self.cd_count > 0:
+            print(f'{BLUE} Ability is not ready, {self.cd_count} rounds left')
+            return False
         if target.player == self.character.player:
             print(f'{RED}Cannot attack teamates!{RESET}')
             return False
@@ -30,7 +34,7 @@ class Power_Shot(Atk_Abilities):
         before_health = target.health
         if not self.character.attack(target, dmg_f=self.damage):
             return False
-        
+        self.cd_count = self.cd
         x_diff = self.character.pos.x - target.pos.x    # Negative = source is left of target
         y_diff = self.character.pos.y - target.pos.y    # Negative = source is below target
         del_x = 0
@@ -66,7 +70,7 @@ class Charge(Buff_Abilities):
         
         self.add_rage = add_rage
         super().__init__(range_buff=range_buff, boost_buff=boost_buff, name=name, mana_cost=mana_cost, character=character)
-    
+
     def use(self, target):
         if self.character.mana < self.mana_cost:
             print(f'{RED}Not enough mana!{RESET}')
@@ -297,6 +301,8 @@ class Sheath:
         self.sheath_count = sheath_count
         self.range = range
         self.character = character
+        self.cd = 0
+        self.cd_count = 0
         
     def use(self, target):
         if self.character.mana < self.mana_cost:
