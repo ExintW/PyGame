@@ -15,17 +15,12 @@ def get_player_info(num):
         else:
             print(f'{RED}Wrong player info!{RESET}')
 
-def decrement_cd(character):
-    for ability in character.abilities:
-        if ability.cd_count != 0:
-            ability.cd_count -= 1
 
 def main_prompt(player, opponent):
     apply_map_effects() 
     update_projectiles()
     check_init_rage()
     for c in player.avail_characters:
-        decrement_cd(c)
         check_characters()
         init_map()
         check_special_mechanics(c)   # e.g. decrement sheath counter
@@ -39,6 +34,7 @@ def main_prompt(player, opponent):
         check_characters()
         if check_end():
             return False
+        decrement_cd(c)
         init_map()
         divide_line()
     check_end_rage()

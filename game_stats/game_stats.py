@@ -61,7 +61,14 @@ def check_mov_pen(character):
         if not flag:
             character.mov_penalty = False
                 
-    
+def decrement_cd(character):
+    for ability in character.abilities:
+        if ability.cd_count > 0:
+            ability.cd_count -= 1  
+    if character.sig_ability is not None:
+        if character.sig_ability.cd_count > 0:
+            character.sig_ability.cd_count -= 1
+
 def apply_map_effects():
     for p in Stats.PLAYER_LIST:
         for c in p.avail_characters:

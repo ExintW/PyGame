@@ -2,6 +2,7 @@ from globalss.globals import *
 from globalss.colors import *
 from game_stats.UI_utils import check_bounds
 from mechanics.abilities import *
+from player.player_utils import *
 
 class Character:
     def __init__(self, player=None, name=None, profession=None, pos=None, abilities=None, sig_ability=None, range=0, damage=0, max_health=0, mobility=0, max_mana=0, symbol='/', max_rage=None, max_rage_duration=None):
@@ -75,9 +76,7 @@ class Character:
         print()
         print(f'\t{YELLOW}mobility: {self.mobility}{RESET}')
         print(f'\t{RED}damage: {self.damage}{RESET}')
-        print(f'\t{BLUE}abilities: {(lambda lst : [(abil.name, "Ready" if abil.cd_count == 0  else abil.cd_count) for abil in lst])(self.abilities)}{RESET}')
-        if self.sig_ability is not None:
-            print(f'\t{YELLOW}signiture ability: {self.sig_ability.name}{RESET}')
+        self.print_abilities()
         self.print_buffs()
         self.print_abnormalities()
         self.print_map_effects()
@@ -185,104 +184,17 @@ class Character:
                     self.abnormalities.remove(ab)
         return flag
 
-def apply_dmg_buff(source, dmg=0):
-    if dmg == 0:
-        damage = source.damage
-    else:
-        damage = dmg
-    
-    for buff in source.buff[Buff_Type.ATK_BUFF].copy():
-        damage += buff.apply()
-        if buff.duration < 1:
-            source.buff[Buff_Type.ATK_BUFF].remove(buff)
-    for buff in source.buff[Buff_Type.ATK_DEBUFF].copy():
-        damage -= buff.apply()
-        if buff.duration < 1:
-            source.buff[Buff_Type.ATK_DEBUFF].remove(buff)
-    return damage
-
-def apply_def_buff(source, target, dmg=0):    # for samurai aoe atk
-    if dmg == 0:
-        damage = source.damage
-    else:
-        damage = dmg
-    
-    for buff in target.buff[Buff_Type.DEF_BUFF].copy():
-        damage -= buff.apply()
-        if buff.duration < 1:
-            target.buff[Buff_Type.DEF_BUFF].remove(buff)
-    for buff in target.buff[Buff_Type.DEF_DEBUFF].copy():
-        damage += buff.apply()
-        if buff.duration < 1:
-            target.buff[Buff_Type.DEF_DEBUFF].remove(buff)
-    
-    return damage
-
-def apply_dmg_def_buff(source, target, dmg=0):
-    if dmg == 0:
-        damage = source.damage
-    else:
-        damage = dmg
-    
-    for buff in source.buff[Buff_Type.ATK_BUFF].copy():
-        damage += buff.apply()
-        if buff.duration < 1:
-            source.buff[Buff_Type.ATK_BUFF].remove(buff)
-    for buff in source.buff[Buff_Type.ATK_DEBUFF].copy():
-        damage -= buff.apply()
-        if buff.duration < 1:
-            source.buff[Buff_Type.ATK_DEBUFF].remove(buff)
-    for buff in target.buff[Buff_Type.DEF_BUFF].copy():
-        damage -= buff.apply()
-        if buff.duration < 1:
-            target.buff[Buff_Type.DEF_BUFF].remove(buff)
-    for buff in target.buff[Buff_Type.DEF_DEBUFF].copy():
-        damage += buff.apply()
-        if buff.duration < 1:
-            target.buff[Buff_Type.DEF_DEBUFF].remove(buff)
-    
-    return damage
-
-def calculate_move(source):
-    dist = 0
-    for buff in source.buff[Buff_Type.BOOST_BUFF].copy():
-        dist += buff.value
-    for buff in source.buff[Buff_Type.BOOST_DEBUFF].copy():
-        dist -= buff.value
-    return dist
-
-def apply_boost_buff(source):
-    for buff in source.buff[Buff_Type.BOOST_BUFF].copy():
-        buff.apply()
-        if buff.duration < 1:
-            source.buff[Buff_Type.BOOST_BUFF].remove(buff)
-    for buff in source.buff[Buff_Type.BOOST_DEBUFF].copy():
-        buff.apply()
-        if buff.duration < 1:
-            source.buff[Buff_Type.BOOST_DEBUFF].remove(buff)
-            
-def buff_range(source):
-    range = 0
-    if hasattr(source, 'range_shot') and source.range_shot:
-        range += 1
-    for buff in source.buff[Buff_Type.RANGE_BUFF].copy():
-        range += buff.value
-    for buff in source.buff[Buff_Type.RANGE_DEBUFF].copy():
-        range -= buff.value
-    return range
-
-def apply_range_buff(source):
-    if hasattr(source, 'range_shot') and source.range_shot:
-        source.range_shot = False
-        source.range_shot_count = 0
-    for buff in source.buff[Buff_Type.RANGE_BUFF].copy():
-        buff.apply()
-        if buff.duration < 1:
-            source.buff[Buff_Type.RANGE_BUFF].remove(buff)
-    for buff in source.buff[Buff_Type.RANGE_DEBUFF].copy():
-        buff.apply()
-        if buff.duration < 1:
-            source.buff[Buff_Type.RANGE_DEBUFF].remove(buff)
-
-def pos_diff(source, target):
-    return max(abs(source.pos.x - target.pos.x), abs(source.pos.y - target.pos.y))
+    def print_abilities(self):
+        print(f"\t{BLUE}abilities: {RESET}", end='')
+        for i in range(len(self.abilities)):
+            print(f"{BLUE}{self.abilities[i].name}{RESET}", end='')
+            if self.abilities[i].cd_count > 0:
+                print(f'{RED}(cd = {self.abilities[i].cd_count}){RESET}', end='')
+            if i != len(self.abilities) - 1:
+                print(', ', end='')
+        print()
+        if self.sig_ability is not None:
+            print(f'\t{YELLOW}signiture ability: {self.sig_ability.name}{RESET}', end='')
+            if self.sig_ability.cd_count > 0:
+                print(f"{RED}(cd = {self.sig_ability.cd_count}){RESET}", end='')
+            print()

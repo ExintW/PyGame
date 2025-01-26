@@ -7,6 +7,7 @@ from mechanics.map_effects import *
 from mechanics.projectiles import *
 from game_stats.UI_utils import *
 from player.character import *
+from player.player_utils import *
 
 ######################################  ATK ABILITIES  ######################################
 
@@ -15,11 +16,11 @@ class Power_Shot(Atk_Abilities):
                  name='Power Shot', 
                  damage=2, 
                  mana_cost=5,
+                 cd=1,
                  character=None):
-        super().__init__(name=name, damage=damage, mana_cost=mana_cost, character=character)
+        super().__init__(name=name, damage=damage, mana_cost=mana_cost, character=character, cd=cd)
         
         self.push_back_dist = 1
-        self.cd = 3
 
     def use(self, target):
         if self.cd_count > 0:
@@ -34,7 +35,7 @@ class Power_Shot(Atk_Abilities):
         before_health = target.health
         if not self.character.attack(target, dmg_f=self.damage):
             return False
-        self.cd_count = self.cd
+        self.cd_count = self.cd + 1
         x_diff = self.character.pos.x - target.pos.x    # Negative = source is left of target
         y_diff = self.character.pos.y - target.pos.y    # Negative = source is below target
         del_x = 0
@@ -66,12 +67,16 @@ class Charge(Buff_Abilities):
                  name='Charge',
                  mana_cost=4,
                  add_rage=1,
+                 cd=1,
                  character=None):
         
         self.add_rage = add_rage
-        super().__init__(range_buff=range_buff, boost_buff=boost_buff, name=name, mana_cost=mana_cost, character=character)
+        super().__init__(range_buff=range_buff, boost_buff=boost_buff, name=name, mana_cost=mana_cost, character=character, cd=cd)
 
     def use(self, target):
+        if self.cd_count > 0:
+            print(f'{BLUE} Ability is not ready, {self.cd_count} rounds left')
+            return False
         if self.character.mana < self.mana_cost:
             print(f'{RED}Not enough mana!{RESET}')
             return False
@@ -82,6 +87,7 @@ class Charge(Buff_Abilities):
             if len(list) > 0:
                 target.buff[buff_type].extend(list)
         self.character.mana -= self.mana_cost
+        self.cd_count = self.cd + 1
         if self.character.rage < self.character.max_rage:
             self.character.rage += self.add_rage
             Stats.DUMPS.append(f'{CYAN}{self.name}: rage + {self.add_rage}{RESET}')
@@ -93,25 +99,28 @@ class Precision(Buff_Abilities):
                  range_buff=[Buff(name='Precision: range+1', value=1, type=Buff_Type.RANGE_BUFF, duration=2)],
                  name = 'Precision',
                  mana_cost=4,
+                 cd=1,
                  character=None):
-        super().__init__(range_buff=range_buff, name = name, mana_cost= mana_cost, character= character)
+        super().__init__(range_buff=range_buff, name = name, mana_cost= mana_cost, character= character, cd=cd)
 
 class Fortify(Buff_Abilities):
     def __init__(self,
                  def_buff=[Buff(name='Fortify: def+1', value=1, type=Buff_Type.DEF_BUFF, duration=2)],
                  name = 'Fortify',
                  mana_cost=4,
+                 cd=1,
                  character=None):
-        super().__init__(def_buff=def_buff, name = name, mana_cost= mana_cost, character= character)
+        super().__init__(def_buff=def_buff, name = name, mana_cost= mana_cost, character= character, cd=cd)
 
 class Extend(Buff_Abilities):
     def __init__(self,
                  range_buff=[Buff(name='Extend: range+1', value=1, type=Buff_Type.RANGE_BUFF, duration=1)],
                  name = 'Extend',
                  mana_cost=4,
+                 cd=1,
                  character=None,
                  range=0):
-        super().__init__(range_buff=range_buff, name=name, mana_cost=mana_cost, character=character, range=range)
+        super().__init__(range_buff=range_buff, name=name, mana_cost=mana_cost, character=character, range=range, cd=cd)
 
 
 ######################################  AB ABILITIES  ######################################
@@ -121,16 +130,18 @@ class Ignite(Abnormality_Abilities):
                  name='Ignite',
                  abnormalities=[Burn(duration=3, damage=1)],
                  mana_cost=5,
+                 cd=1,
                  character=None):
-        super().__init__(name=name, abnormalities=abnormalities, mana_cost=mana_cost, character=character)
+        super().__init__(name=name, abnormalities=abnormalities, mana_cost=mana_cost, character=character, cd=cd)
 
 class Bash(Abnormality_Abilities):
     def __init__(self,
                  name='Bash',
                  abnormalities=[Stun(duration=1)],
                  mana_cost=5,
+                 cd=1,
                  character=None):
-        super().__init__(name=name, abnormalities=abnormalities, mana_cost=mana_cost, character=character)
+        super().__init__(name=name, abnormalities=abnormalities, mana_cost=mana_cost, character=character, cd=cd)
 
 
 ######################################  SIG ABILITIES  ######################################
@@ -141,8 +152,9 @@ class Blaze(Signiture_Abilities):
                  name='Blaze',
                  channel_round=1,
                  damage=1,
+                 cd=1,
                  duration=3):
-        super().__init__(name=name, channel_round=channel_round, character=character, sig_type=Sig_Type.SINGLE_USE)
+        super().__init__(name=name, channel_round=channel_round, character=character, sig_type=Sig_Type.SINGLE_USE, cd=cd)
         
         self.damage = damage
         self.duration = duration
@@ -176,12 +188,13 @@ class Ashe_Arrow(Signiture_Abilities):
                  character=None,
                  name='Ashe Arrow',
                  channel_round=1,
+                 cd=1,
                  damage=0,      # initial dmg
                  duration=0,    # initial stun duration
                  speed=1,
                  dmg_growth=1,  
                  stun_growth=0.5):
-        super().__init__(name=name, channel_round=channel_round, character=character, sig_type=Sig_Type.SINGLE_USE)
+        super().__init__(name=name, channel_round=channel_round, character=character, sig_type=Sig_Type.SINGLE_USE, cd=cd)
         self.damage = damage
         self.stun_duration = duration
         self.speed = speed
@@ -214,12 +227,13 @@ class Void_Slash(Signiture_Abilities):
                  character=None,
                  name='Void Slash',
                  channel_round=0,
+                 cd=1,
                  damage_growth=1,
                  range_growth=1,
                  max_charge=3,
                  burn_duration=2,
                  burn_dmg=1):
-        super().__init__(name=name, channel_round=channel_round, character=character, sig_type=Sig_Type.CONTINUOUS)
+        super().__init__(name=name, channel_round=channel_round, character=character, sig_type=Sig_Type.CONTINUOUS, cd=cd)
         self.damage_growth = damage_growth
         self.range_growth = range_growth
         self.max_charge = max_charge
@@ -250,7 +264,7 @@ class Void_Slash(Signiture_Abilities):
                 print(f"{RED}Error in direction: Please only enter -1, 0, or 1!{RESET}")   
                 return False
             position = Position(self.character.pos.x, self.character.pos.y)
-            for i in range(atk_range):
+            for _ in range(atk_range):
                 position.x += direction.x
                 position.y -= direction.y  
                 if check_bounds(position):
@@ -282,9 +296,10 @@ class Heal(Heal_Abilities):
                  character=None,
                  name='Heal',
                  mana_cost=5,
+                 cd=1,
                  heal_amount=2
                  ):
-        super().__init__(name=name, mana_cost=mana_cost, heal_amount=heal_amount, character=character)
+        super().__init__(name=name, mana_cost=mana_cost, heal_amount=heal_amount, character=character, cd=cd)
 
 ######################################  SPECIAL ABILITIES  ######################################
 
@@ -292,6 +307,7 @@ class Sheath:
     def __init__(self,
                  name = 'Sheath',
                  mana_cost=5,
+                 cd=1,
                  character=None,
                  sheath_count=2,
                  range=0):
@@ -301,7 +317,7 @@ class Sheath:
         self.sheath_count = sheath_count
         self.range = range
         self.character = character
-        self.cd = 0
+        self.cd = cd
         self.cd_count = 0
         
     def use(self, target):

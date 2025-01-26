@@ -2,6 +2,7 @@ from mechanics.buffs import Buff
 from globalss.globals import *
 from globalss.colors import *
 from player.character import *
+from player.player_utils import *
 
 import copy
 
@@ -39,6 +40,9 @@ class Buff_Abilities:
         self.cd_count = 0
     
     def use(self, target):
+        if self.cd_count > 0:
+            print(f'{BLUE} Ability is not ready, {self.cd_count} rounds left')
+            return False
         if self.character.mana < self.mana_cost:
             print(f'{RED}Not enough mana!{RESET}')
             return False
@@ -49,6 +53,7 @@ class Buff_Abilities:
             if len(list) > 0:
                 target.buff[buff_type].extend(list)
         self.character.mana -= self.mana_cost
+        self.cd_count = self.cd + 1
         Stats.DUMPS.append(f'{CYAN}Buff {self.name} applied to character: {target.name}!{RESET}')
         return True
 
@@ -63,6 +68,9 @@ class Abnormality_Abilities:
         self.cd_count = 0
     
     def use(self, target):
+        if self.cd_count > 0:
+            print(f'{BLUE} Ability is not ready, {self.cd_count} rounds left')
+            return False
         if target.player == self.character.player:
             print(f"{RED}Cannot apply to player in same team!{RESET}")
             return False
@@ -88,6 +96,7 @@ class Abnormality_Abilities:
         
         apply_range_buff(self.character)
         self.character.mana -= self.mana_cost
+        self.cd_count = self.cd + 1
         dump = f"{CYAN}Abnormality: "
         for ab in self.abnormalities:
             dump += f"{ab.name} "
@@ -115,6 +124,9 @@ class Signiture_Abilities:
             self.character.channel_counter -= 1
             
         elif self.character.channel_counter == -1:
+            if self.cd_count > 0:
+                print(f'{BLUE} Ability is not ready, {self.cd_count} rounds left')
+                return False
             self.character.channel_counter = self.channel_round
                   
         if self.character.channel_counter == 0:    # READY to use
@@ -122,6 +134,7 @@ class Signiture_Abilities:
                 while not self.use():
                     pass
                 self.character.channel_counter = -1
+                self.cd_count = self.cd + 1
             elif self.sig_type == Sig_Type.CONTINUOUS:
                 while not self.start():
                     pass
@@ -148,6 +161,7 @@ class Signiture_Abilities:
                 self.using = False
                 self.rounds_used = 0
                 self.character.channel_counter = -1
+                self.cd_count = self.cd + 1
                 return True
                 
 class Heal_Abilities:
@@ -162,6 +176,9 @@ class Heal_Abilities:
         self.cd_count = 0
     
     def use(self, target):
+        if self.cd_count > 0:
+            print(f'{BLUE} Ability is not ready, {self.cd_count} rounds left')
+            return False
         if target.health == target.max_health:
             print(f"{RED}Target health already at max!{RESET}")
             return False
@@ -181,6 +198,7 @@ class Heal_Abilities:
         else:
             target.health += self.heal_amount
         self.character.mana -= self.mana_cost
+        self.cd_count = self.cd + 1
         health_restored = target.health - prev_health
         
         Stats.DUMPS.append(f'{GREEN}Heal applied to {target.name}! Health + {health_restored}{RESET}')
