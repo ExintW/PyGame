@@ -68,7 +68,7 @@ class Knight(Character):
                          abilities=[Fortify(character=self), Bash(character=self)],
                          range=1,
                          damage=1,
-                         max_health=10,
+                         max_health=7,
                          mobility=1,
                          max_mana=10,
                          symbol='K') # 🛡️\uFE0E

@@ -15,7 +15,7 @@ class Power_Shot(Atk_Abilities):
     def __init__(self,
                  name='Power Shot', 
                  damage=2, 
-                 mana_cost=5,
+                 mana_cost=6,
                  cd=1,
                  character=None):
         super().__init__(name=name, damage=damage, mana_cost=mana_cost, character=character, cd=cd)
@@ -128,7 +128,7 @@ class Extend(Buff_Abilities):
 class Ignite(Abnormality_Abilities):
     def __init__(self,
                  name='Ignite',
-                 abnormalities=[Burn(duration=3, damage=1)],
+                 abnormalities=[Burn(duration=2, damage=1)],
                  mana_cost=5,
                  cd=1,
                  character=None):
@@ -139,7 +139,7 @@ class Bash(Abnormality_Abilities):
                  name='Bash',
                  abnormalities=[Stun(duration=1)],
                  mana_cost=5,
-                 cd=1,
+                 cd=2,
                  character=None):
         super().__init__(name=name, abnormalities=abnormalities, mana_cost=mana_cost, character=character, cd=cd)
 
@@ -150,7 +150,7 @@ class Blaze(Signiture_Abilities):
     def __init__(self,
                  character=None,
                  name='Blaze',
-                 channel_round=1,
+                 channel_round=2,
                  damage=1,
                  cd=1,
                  duration=3):
