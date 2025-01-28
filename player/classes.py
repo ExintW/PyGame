@@ -59,8 +59,10 @@ class Healer(Character):
                          damage=1,
                          max_health=4,
                          mobility=1,
-                         max_mana=15,
+                         max_mana=10,
                          symbol='H')
+        self.max_charge = 2
+        self.charges = 0
 
 class Knight(Character):
     def __init__(self, player=None, name=None, profession='KNIGHT', pos=None):

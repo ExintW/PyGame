@@ -64,6 +64,8 @@ class Character:
         print()
         if hasattr(self, 'range_shot_count'):
             print(f'{YELLOW}range shot count: {self.range_shot_count}{RESET}')
+        if hasattr(self, 'charges'):
+            self.print_charges()
         print(f'\t{GREEN}health: {self.health}{RESET}', f'{BG_GREEN} {RESET}'*self.health + f'{BG_DARK_GREEN} {RESET}'*(self.max_health - self.health))
         print(f'\t{BLUE}mana: {self.mana}{RESET}', f'{BG_BLUE} {RESET}'*self.mana + f'{BG_DARK_BLUE} {RESET}'*(self.max_mana - self.mana))
         if self.rage is not None:
@@ -97,6 +99,9 @@ class Character:
                     self.range_shot_count += 1
             if dmg >= 0:
                 target.health -= dmg
+            if hasattr(self, 'charges'):    # for healer only
+                if self.charges < self.max_charge:
+                    self.charges += 1
             if self.rage is not None and self.rage != self.max_rage:
                 self.rage += 1
                 Stats.DUMPS.append(f'{CYAN}{self.name} rage + 1{RESET}')
@@ -198,3 +203,10 @@ class Character:
             if self.sig_ability.cd_count > 0:
                 print(f"{RED}(cd = {self.sig_ability.cd_count}){RESET}", end='')
             print()
+    
+    def print_charges(self):
+        print('\t', end='')
+        for _ in range(self.charges):
+            print(f'{GREEN}✚{RESET}' + ' ', end='')
+            
+        print(f'•'*(self.max_charge - self.charges))

@@ -295,12 +295,43 @@ class Heal(Heal_Abilities):
     def __init__(self,
                  character=None,
                  name='Heal',
-                 mana_cost=5,
+                 mana_cost=6,
                  cd=1,
                  heal_amount=2
                  ):
         super().__init__(name=name, mana_cost=mana_cost, heal_amount=heal_amount, character=character, cd=cd)
-
+    
+    def use(self, target):
+        if self.cd_count > 0:
+            print(f'{BLUE}Ability is not ready, {self.cd_count} rounds left')
+            return False
+        if target.health == target.max_health:
+            print(f"{RED}Target health already at max!{RESET}")
+            return False
+        if self.character.mana < self.mana_cost and self.character.charges < self.character.max_charge:
+            print(f"{RED}Not enough mana!{RESET}")
+            return False
+        if target.player != self.character.player:
+            print(f'{RED}Cannot apply to enemy characters!{RESET}')
+            return False
+        if pos_diff(self.character, target) > self.character.range:
+            print(f"{CYAN}Not enough range!{RESET}")
+            return False
+        health_restored = 0
+        prev_health = target.health
+        if target.health + self.heal_amount > target.max_health:
+            target.health = target.max_health
+        else:
+            target.health += self.heal_amount
+        if self.character.charges == self.character.max_charge:
+            self.character.charges = 0
+        else:
+            self.character.mana -= self.mana_cost
+        self.cd_count = self.cd + 1    
+        health_restored = target.health - prev_health
+        
+        Stats.DUMPS.append(f'{GREEN}Heal applied to {target.name}! Health + {health_restored}{RESET}')
+        return True
 ######################################  SPECIAL ABILITIES  ######################################
 
 class Sheath:
