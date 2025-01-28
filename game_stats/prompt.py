@@ -20,6 +20,7 @@ def main_prompt(player, opponent):
     apply_map_effects() 
     update_projectiles()
     check_init_rage()
+    check_characters()
     for c in player.avail_characters:
         check_characters()
         init_map()

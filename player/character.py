@@ -51,9 +51,9 @@ class Character:
     def print_stat(self):
         print(f'{PURPLE}Character: {self.profession}{RESET} ', end='')
         if self.channel_counter > 0:
-            print(f'{YELLOW}CHANNELING ({self.channel_counter} Rounds left)', end = ' ')
+            print(f'{YELLOW}CHANNELING ({self.channel_counter} Rounds left){RESET}', end = ' ')
         if self.sig_ability is not None and self.sig_ability.using:
-            print(f'{YELLOW}CASTING ({self.sig_ability.rounds_used} Rounds)', end = ' ')
+            print(f'{YELLOW}CASTING ({self.sig_ability.rounds_used} Rounds){RESET}', end = ' ')
         if hasattr(self, 'sheathed') and self.sheathed:
             if self.sheath_counter > 0:
                 print(f'{YELLOW}SHEATHED{RESET}', end=' ')
@@ -62,26 +62,35 @@ class Character:
         if self.mov_penalty:
             print(f'{YELLOW}MOV-PENALTY{RESET}', end=' ')
         print()
+        
         if hasattr(self, 'range_shot_count'):
             print(f'{YELLOW}range shot count: {self.range_shot_count}{RESET}')
         if hasattr(self, 'charges'):
             self.print_charges()
+        if hasattr(self, 'souls'):
+            self.print_souls()
+            
         print(f'\t{GREEN}health: {self.health}{RESET}', f'{BG_GREEN} {RESET}'*self.health + f'{BG_DARK_GREEN} {RESET}'*(self.max_health - self.health))
         print(f'\t{BLUE}mana: {self.mana}{RESET}', f'{BG_BLUE} {RESET}'*self.mana + f'{BG_DARK_BLUE} {RESET}'*(self.max_mana - self.mana))
+       
         if self.rage is not None:
             print(f'\t{RED}rage: {self.rage}{RESET}', f'{BG_RED} {RESET}'*self.rage + f'{BG_DARK_RED} {RESET}'*(self.max_rage - self.rage))
         if self.in_max_rage is not None and self.in_max_rage:
             print(f'\t{RED}max rage duration: {self.max_rage_counter}{RESET}')
+        
         print('\trange:', self.range, end='')
         if hasattr(self, 'range_shot') and self.range_shot:
             print(f'{YELLOW} RANGE SHOT{RESET}', end='')
         print()
+        
         print(f'\t{YELLOW}mobility: {self.mobility}{RESET}')
         print(f'\t{RED}damage: {self.damage}{RESET}')
+        
         self.print_abilities()
         self.print_buffs()
         self.print_abnormalities()
         self.print_map_effects()
+        
         print('\tpos:', self.pos)
         
     def attack(self, target, dmg_f=0):     
@@ -210,3 +219,10 @@ class Character:
             print(f'{GREEN}✚{RESET}' + ' ', end='')
             
         print(f'•'*(self.max_charge - self.charges))
+    
+    def print_souls(self):
+        print('\t', end='')
+        for _ in range(self.souls):
+            print(f'🔥', end='')
+            
+        print(f'•'*(self.max_souls - self.souls))

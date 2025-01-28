@@ -241,11 +241,11 @@ class Void_Slash(Signiture_Abilities):
         self.burn_dmg = burn_dmg
         
     def use(self):
-        if self.rounds_used == 0:
+        if self.rounds_used == 0 and self.character.souls == 0:
             return True
         
-        charge = self.rounds_used
-        if self.rounds_used > self.max_charge:
+        charge = self.rounds_used + self.character.souls
+        if charge > self.max_charge:
             charge = self.max_charge
             
         damage = self.damage_growth * charge
@@ -270,7 +270,7 @@ class Void_Slash(Signiture_Abilities):
                 if check_bounds(position):
                     self.check_hit(position, damage)
                     Stats.MAP_EFFECT_LIST.append(Map_Burn(duration=self.burn_duration, pos=copy.deepcopy(position), damage=self.burn_dmg, from_player=self.character.player))
-            
+            self.character.souls = 0
             return True
         except:
             print(f"{RED}Error in direction!{RESET}")
@@ -337,7 +337,7 @@ class Heal(Heal_Abilities):
 class Sheath:
     def __init__(self,
                  name = 'Sheath',
-                 mana_cost=5,
+                 mana_cost=3,
                  cd=1,
                  character=None,
                  sheath_count=2,

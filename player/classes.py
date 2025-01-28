@@ -89,12 +89,17 @@ class Samurai(Character):
                          symbol='S')
         self.sheathed = False   # 纳刀
         self.sheath_counter = 0
+        self.souls = 0
+        self.max_souls = 3
         self.buff[Buff_Type.BOOST_BUFF].append(Buff('Passive: mobil+1', 1, Buff_Type.BOOST_BUFF, 1))
         
     def attack(self, target, dmg_f=0):     
         before_range_buff = self.buff[Buff_Type.RANGE_BUFF].copy()
         before_atk_buff = self.buff[Buff_Type.ATK_BUFF].copy()
         before_sheathed = self.sheathed
+        
+        is_sheated_atk = False # for souls calculation
+        
         if self.sheathed and self.sheath_counter > 0:
             print(f'{CYAN}Samurai cannot atk this round (Sheathed)!{RESET}')
             return False
@@ -102,6 +107,7 @@ class Samurai(Character):
             self.buff[Buff_Type.RANGE_BUFF].append(Buff(name='Sheath: range+1', value=1, type=Buff_Type.RANGE_BUFF, duration=1))
             self.buff[Buff_Type.ATK_BUFF].append(Buff(name='Sheath: dmg+1', value=1, type=Buff_Type.ATK_BUFF, duration=1))
             self.sheathed = False
+            is_sheated_atk = True
         
         atk_range = self.range + buff_range(self)
         
@@ -126,12 +132,19 @@ class Samurai(Character):
                     if half_dmg > 0:
                         c.health -= half_dmg
                         Stats.DUMPS.append(f'{CYAN}Attack is successful: {c.name}: health - {half_dmg}{RESET}')
+                        if self.souls < self.max_souls:
+                            self.souls += 1
+                        Stats.DUMPS.append(f'{CYAN}Slash atk: Souls + 1{RESET}')
                 else:
                     continue
                 
                 if c.rage is not None and c.rage < c.max_rage:
                     c.rage += 1
                     Stats.DUMPS.append(f'{CYAN}{c.name} rage + 1{RESET}')  
+            
+            if is_sheated_atk and self.souls < self.max_souls:
+                self.souls += 1
+                Stats.DUMPS.append(f'{CYAN}Sheathed atk: Souls + 1{RESET}')
             
             return True
         else:
