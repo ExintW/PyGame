@@ -10,8 +10,8 @@ class Archer(Character):
                          abilities=[Power_Shot(character=self), Precision(character=self)],
                          sig_ability=Ashe_Arrow(character=self),
                          range=2,
-                         damage=2,
-                         max_health=5,
+                         damage=20,
+                         max_health=50,
                          mobility=2,
                          max_mana=10,
                          symbol='A') # 🏹\uFE0E
@@ -24,18 +24,18 @@ class Warrior(Character):
         super().__init__(player=player, name=name, profession=profession, pos=pos,
                          abilities=[Charge(character=self)],
                          range=1,
-                         damage=2,
-                         max_health=7,
+                         damage=20,
+                         max_health=70,
                          mobility=2,
                          max_mana=10,
                          max_rage=7,
                          max_rage_duration=3,
                          symbol='W') # ⚔️\uFE0E
-        self.rage_def_buff_value = 1
-        self.rage_atk_buff_value = 1
+        self.rage_def_buff_value = 10
+        self.rage_atk_buff_value = 10
         self.rage_range_buff_value = 1
         self.rage_boost_buff_value = 1
-        self.buff[Buff_Type.ATK_BUFF].append(Buff('Passive: atk+1', 1, Buff_Type.ATK_BUFF, 1))
+        self.buff[Buff_Type.ATK_BUFF].append(Buff('Passive: atk+10', 10, Buff_Type.ATK_BUFF, 1))
         
 
 class Mage(Character):
@@ -44,8 +44,8 @@ class Mage(Character):
                          abilities=[Ignite(character=self)],
                          sig_ability=Blaze(character=self),
                          range=2,
-                         damage=1,
-                         max_health=4,
+                         damage=10,
+                         max_health=40,
                          mobility=1,
                          max_mana=10,
                          symbol='M') # 🧙‍♂️\uFE0E
@@ -56,8 +56,8 @@ class Healer(Character):
         super().__init__(player=player, name=name, profession=profession, pos=pos,
                          range=3,
                          abilities=[Heal(character=self), Extend(character=self, range=3)],
-                         damage=1,
-                         max_health=4,
+                         damage=10,
+                         max_health=40,
                          mobility=1,
                          max_mana=10,
                          symbol='H')
@@ -69,12 +69,12 @@ class Knight(Character):
         super().__init__(player=player, name=name, profession=profession, pos=pos,
                          abilities=[Fortify(character=self), Bash(character=self)],
                          range=1,
-                         damage=1,
-                         max_health=7,
+                         damage=10,
+                         max_health=70,
                          mobility=1,
                          max_mana=10,
                          symbol='K') # 🛡️\uFE0E
-        self.buff[Buff_Type.DEF_BUFF].append(Buff('Passive: def+1', 1, Buff_Type.DEF_BUFF, 3))
+        self.buff[Buff_Type.DEF_BUFF].append(Buff('Passive: def+10', 10, Buff_Type.DEF_BUFF, 3))
 
 class Samurai(Character):
     def __init__(self, player=None, name=None, profession='SAMURAI', pos=None):
@@ -82,8 +82,8 @@ class Samurai(Character):
                          abilities=[Sheath(character=self)],
                          sig_ability=Void_Slash(character=self),
                          range=1,
-                         damage=2,
-                         max_health=7,
+                         damage=20,
+                         max_health=70,
                          mobility=1,
                          max_mana=10,
                          symbol='S')
@@ -105,7 +105,7 @@ class Samurai(Character):
             return False
         elif self.sheathed and self.sheath_counter == 0:
             self.buff[Buff_Type.RANGE_BUFF].append(Buff(name='Sheath: range+1', value=1, type=Buff_Type.RANGE_BUFF, duration=1))
-            self.buff[Buff_Type.ATK_BUFF].append(Buff(name='Sheath: dmg+1', value=1, type=Buff_Type.ATK_BUFF, duration=1))
+            self.buff[Buff_Type.ATK_BUFF].append(Buff(name='Sheath: dmg+10', value=10, type=Buff_Type.ATK_BUFF, duration=1))
             self.sheathed = False
             is_sheated_atk = True
         

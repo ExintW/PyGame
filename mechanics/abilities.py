@@ -14,7 +14,7 @@ from player.player_utils import *
 class Power_Shot(Atk_Abilities):
     def __init__(self,
                  name='Power Shot', 
-                 damage=2, 
+                 damage=20, 
                  mana_cost=6,
                  cd=1,
                  character=None):
@@ -105,7 +105,7 @@ class Precision(Buff_Abilities):
 
 class Fortify(Buff_Abilities):
     def __init__(self,
-                 def_buff=[Buff(name='Fortify: def+1', value=1, type=Buff_Type.DEF_BUFF, duration=2)],
+                 def_buff=[Buff(name='Fortify: def+10', value=10, type=Buff_Type.DEF_BUFF, duration=2)],
                  name = 'Fortify',
                  mana_cost=4,
                  cd=1,
@@ -128,7 +128,7 @@ class Extend(Buff_Abilities):
 class Ignite(Abnormality_Abilities):
     def __init__(self,
                  name='Ignite',
-                 abnormalities=[Burn(duration=2, damage=1)],
+                 abnormalities=[Burn(duration=2, damage=10)],
                  mana_cost=5,
                  cd=1,
                  character=None):
@@ -151,7 +151,7 @@ class Blaze(Signiture_Abilities):
                  character=None,
                  name='Blaze',
                  channel_round=2,
-                 damage=1,
+                 damage=10,
                  cd=1,
                  duration=3):
         super().__init__(name=name, channel_round=channel_round, character=character, sig_type=Sig_Type.SINGLE_USE, cd=cd)
@@ -192,7 +192,7 @@ class Ashe_Arrow(Signiture_Abilities):
                  damage=0,      # initial dmg
                  duration=0,    # initial stun duration
                  speed=1,
-                 dmg_growth=1,  
+                 dmg_growth=10,  
                  stun_growth=0.5):
         super().__init__(name=name, channel_round=channel_round, character=character, sig_type=Sig_Type.SINGLE_USE, cd=cd)
         self.damage = damage
@@ -228,11 +228,11 @@ class Void_Slash(Signiture_Abilities):
                  name='Void Slash',
                  channel_round=0,
                  cd=1,
-                 damage_growth=1,
+                 damage_growth=10,
                  range_growth=1,
                  max_charge=3,
                  burn_duration=2,
-                 burn_dmg=1):
+                 burn_dmg=10):
         super().__init__(name=name, channel_round=channel_round, character=character, sig_type=Sig_Type.CONTINUOUS, cd=cd)
         self.damage_growth = damage_growth
         self.range_growth = range_growth
@@ -297,7 +297,7 @@ class Heal(Heal_Abilities):
                  name='Heal',
                  mana_cost=6,
                  cd=1,
-                 heal_amount=2
+                 heal_amount=20
                  ):
         super().__init__(name=name, mana_cost=mana_cost, heal_amount=heal_amount, character=character, cd=cd)
     

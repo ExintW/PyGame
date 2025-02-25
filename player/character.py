@@ -70,7 +70,7 @@ class Character:
         if hasattr(self, 'souls'):
             self.print_souls()
             
-        print(f'\t{GREEN}health: {self.health}{RESET}', f'{BG_GREEN} {RESET}'*self.health + f'{BG_DARK_GREEN} {RESET}'*(self.max_health - self.health))
+        print(f'\t{GREEN}health: {self.health}{RESET}', f'{BG_GREEN} {RESET}'*int(self.health/10) + f'{BG_DARK_GREEN} {RESET}'*int((self.max_health - self.health)/10))
         print(f'\t{BLUE}mana: {self.mana}{RESET}', f'{BG_BLUE} {RESET}'*self.mana + f'{BG_DARK_BLUE} {RESET}'*(self.max_mana - self.mana))
        
         if self.rage is not None:
