@@ -64,17 +64,21 @@ class Healer(Character):
         self.max_charge = 2
         self.charges = 0
 
-class Knight(Character):
-    def __init__(self, player=None, name=None, profession='KNIGHT', pos=None):
+class Ghost_Knight(Character):
+    def __init__(self, player=None, name=None, profession='GHOST_KNIGHT', pos=None):
         super().__init__(player=player, name=name, profession=profession, pos=pos,
                          abilities=[Fortify(character=self), Bash(character=self)],
                          range=1,
                          damage=10,
                          max_health=70,
-                         mobility=1,
+                         mobility=2,
                          max_mana=10,
-                         symbol='K') # 🛡️\uFE0E
-        self.buff[Buff_Type.DEF_BUFF].append(Buff('Passive: def+10', 10, Buff_Type.DEF_BUFF, 3))
+                         symbol='G') # 🛡️\uFE0E
+        # self.buff[Buff_Type.DEF_BUFF].append(Buff('Passive: def+10', 10, Buff_Type.DEF_BUFF, 3))
+        self.immune_mov_pen = True  # Unique Passive: immune to mov pen
+        self.phantom_aegis = False
+        self.phantom_aegis_count = 0
+        self.phantom_aegis_max_count = 3
 
 class Samurai(Character):
     def __init__(self, player=None, name=None, profession='SAMURAI', pos=None):

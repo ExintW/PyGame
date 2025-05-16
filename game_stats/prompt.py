@@ -55,7 +55,7 @@ def prompt_move(c, target):
         SIG:
             "sig"
         END:
-            "end"
+            "end" or "e"
     """
     while(1):
         end_round = False
@@ -76,7 +76,10 @@ def prompt_move(c, target):
         elif not end_round:
             text = input(f'{GREEN}Enter the action for {RESET}{c.color}{c.name}{RESET}{GREEN} (MOV, ATK, ABL, SIG, END): {RESET}').split()
             
-            match text[0].upper():     # text[0].upper() is the first arg       
+            match text[0].upper():     # text[0].upper() is the first arg   
+                case 'E':
+                    print(f'{CYAN}Round Ended{RESET}')
+                    end_round = True
                 case 'END':
                     print(f'{CYAN}Round Ended{RESET}')
                     end_round = True

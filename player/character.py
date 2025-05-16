@@ -63,13 +63,18 @@ class Character:
             print(f'{YELLOW}MOV-PENALTY{RESET}', end=' ')
         print()
         
+        # Special count mechanics
         if hasattr(self, 'range_shot_count'):
             print(f'{YELLOW}range shot count: {self.range_shot_count}{RESET}')
         if hasattr(self, 'charges'):
-            self.print_charges()
+            self.print_special_count(f'{GREEN}✚{RESET}', self.max_charge, self.charges, 1)
         if hasattr(self, 'souls'):
-            self.print_souls()
-            
+            self.print_special_count(f'🔥', self.max_souls, self.souls)
+        if hasattr(self, 'phantom_aegis_count'):
+            self.print_special_count(f'{BLUE}⛨{RESET}', self.phantom_aegis_max_count, self.phantom_aegis_count, 1)
+            if self.phantom_aegis:
+                print(f'\t{YELLOW}PHANTOM AEGIS {RESET}{GREEN}ACTIVE{RESET}{BLUE}⛨{RESET} ')
+                
         print(f'\t{GREEN}health: {self.health}{RESET}', f'{BG_GREEN} {RESET}'*int(self.health/10) + f'{BG_DARK_GREEN} {RESET}'*int((self.max_health - self.health)/10))
         print(f'\t{BLUE}mana: {self.mana}{RESET}', f'{BG_BLUE} {RESET}'*self.mana + f'{BG_DARK_BLUE} {RESET}'*(self.max_mana - self.mana))
        
@@ -106,6 +111,10 @@ class Character:
                     self.range_shot_count = 0
                 else:
                     self.range_shot_count += 1
+            if hasattr(target, 'phantom_aegis') and target.phantom_aegis == True:
+                if dmg > 0:
+                    dmg = 10
+                    target.phantom_aegis = False
             if dmg >= 0:
                 target.health -= dmg
             if hasattr(self, 'charges'):    # for healer only
@@ -226,3 +235,17 @@ class Character:
             print(f'🔥', end='')
             
         print(f'•'*(self.max_souls - self.souls))
+    
+    def print_phantom(self):
+        print('\t', end='')
+        for _ in range(self.phantom_asegis_count):
+            print(f'{BLUE}⛨{RESET}', end='')
+            
+        print(f'•'*(self.phantom_aegis_max_count - self.phantom_aegis_count))
+    
+    def print_special_count(self, symbol, max, count, num_spacing=0):
+        print('\t', end='')
+        for _ in range(count):
+            print(f'{symbol}' + num_spacing*' ', end='')
+            
+        print(f'•'*(max - count))

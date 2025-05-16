@@ -14,35 +14,17 @@ import sys
 p1 = Player(name='P1', color=BLUE)
 p2 = Player(name='P2', color=RED)
 
-# p1_Archer = Archer(player=p1, name='p1 Archer', profession='ARCHER', pos=Position(3, 2))
-# p1_Warrior = Warrior(player=p1, name='p1 Warrior', profession='WARRIOR', pos=Position(4, 3))
-# p1_Mage = Mage(player=p1, name='p1 Mage', profession='MAGE', pos=Position(3, 6))
-# p1_Healer = Healer(player=p1, name='p1 Healer', profession='HEALER', pos=Position(3, 4))
-# p1_Knight = Knight(player=p1, name='p1 Knight', profession='KNIGHT', pos=Position(4, 5))
-
-# p2_Archer = Archer(player=p2, name='p2 Archer', profession='ARCHER', pos=Position(7, 6))
-# p2_Warrior = Warrior(player=p2, name='p2 Warrior', profession='WARRIOR', pos=Position(6, 5))
-# p2_Mage = Mage(player=p2, name='p2 Mage', profession='MAGE', pos=Position(7, 2))
-# p2_Healer = Healer(player=p2, name='p2 Healer', profession='HEALER', pos=Position(7, 4))
-# p2_Knight = Knight(player=p2, name='p2 Knight', profession='KNIGHT', pos=Position(6, 3))
-
 p1_Samurai = Samurai(player=p1, name='p1 Samurai', pos=Position(4, 3))
-p1_Knight = Knight(player=p1, name='p1 Knight', pos=Position(4, 5))
+p1_Ghost_Knight = Ghost_Knight(player=p1, name='p1 Ghost_Knight', pos=Position(4, 5))
 p1_Mage = Mage(player=p1, name='p1 Mage', pos=Position(3, 4))
-p1.characters = [p1_Samurai, p1_Knight, p1_Mage]
+p1.characters = [p1_Samurai, p1_Ghost_Knight, p1_Mage]
 
 p2_Archer = Archer(player=p2, name='p2 Archer', pos=Position(7, 3))
 p2_Warrior = Warrior(player=p2, name='p2 Warrior', pos=Position(6, 4))
 p2_Healer = Healer(player=p2, name='p2 Healer', pos=Position(7, 5))
 p2.characters = [p2_Archer, p2_Warrior, p2_Healer]
 
-#p1.characters = [p1_Archer, p1_Warrior, p1_Knight, p1_Mage, p1_Healer]
-#p1.characters = [p1_Archer, p1_Mage]
-#p1.characters = [p1_Archer]
 p1.avail_characters = p1.characters
-#p2.characters = [p2_Warrior, p2_Archer, p2_Knight, p2_Mage, p2_Healer]
-#p2.characters = [p2_Archer, p2_Mage]
-#p2.characters = [p2_Archer]
 p2.avail_characters = p2.characters
 
 # p1 = get_player_info(1)

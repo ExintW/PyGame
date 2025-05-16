@@ -56,7 +56,10 @@ def check_mov_pen(character):
         flag = False
         for c in p.avail_characters:
             if abs(character.pos.x - c.pos.x) + abs(character.pos.y - c.pos.y) == 1:
-                character.mov_penalty = True
+                if hasattr(character, 'immune_mov_pen') and character.immune_mov_pen:
+                    character.mov_penalty = False
+                else:
+                    character.mov_penalty = True
                 flag = True
         if not flag:
             character.mov_penalty = False
@@ -102,6 +105,19 @@ def check_special_mechanics(character):
     if hasattr(character, 'sheathed'):
         if character.sheath_counter > 0:
             character.sheath_counter -= 1
+    
+    if hasattr(character, 'phantom_aegis_count'):
+        if character.phantom_aegis_count >= character.phantom_aegis_max_count:
+            # check if buff exists
+            if character.phantom_aegis == False:
+                character.phantom_aegis = True
+                
+            character.phantom_aegis_count = 0
+            
+        else:
+            character.phantom_aegis_count += 1
+
+            
 
 def check_init_rage():
     Stats.CHAR_COPY_LIST_FOR_RAGE.clear()
