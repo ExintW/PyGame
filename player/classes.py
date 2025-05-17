@@ -76,7 +76,7 @@ class Ghost_Knight(Character):
                          symbol='G') # 🛡️\uFE0E
         # self.buff[Buff_Type.DEF_BUFF].append(Buff('Passive: def+10', 10, Buff_Type.DEF_BUFF, 3))
         self.immune_mov_pen = True  # Unique Passive: immune to mov pen
-        self.phantom_aegis = False
+        self.phantom_aegis = True
         self.phantom_aegis_count = 0
         self.phantom_aegis_max_count = 3
 
